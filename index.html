@@ -36,7 +36,6 @@
   }
   ::selection{background:var(--gold);color:var(--bg-panel-2);}
 
-  /* texture */
   body::before{
     content:"";
     position:fixed; inset:0;
@@ -108,7 +107,7 @@
   .meta-item{font-family:var(--mono); font-size:12px; color:var(--paper-faint);}
   .meta-item b{display:block; font-family:var(--body); font-weight:500; color:var(--paper); font-size:14.5px; margin-top:4px;}
 
-  /* ---------- FLOW DIAGRAM (signature) ---------- */
+  /* ---------- FLOW DIAGRAM ---------- */
   .flow-section{padding:70px 0 40px;}
   .flow-caption{
     font-family:var(--mono); font-size:11.5px; color:var(--paper-faint);
@@ -168,7 +167,7 @@
   .card p{font-size:15px; color:var(--paper-dim); font-weight:300;}
   .card p + p{margin-top:12px;}
 
-  /* triad panels (part II / III) */
+  /* triad panels */
   .triad{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft);}
   .triad-item{background:var(--bg-panel); padding:34px 28px; position:relative;}
   .triad-index{
@@ -180,7 +179,7 @@
   }
   .triad-item p{font-size:14px; color:var(--paper-dim); font-weight:300;}
 
-  /* pillars (part IV) */
+  /* pillars */
   .pillars{display:flex; flex-direction:column; gap:0;}
   .pillar{
     display:grid; grid-template-columns:200px 1fr; gap:32px;
@@ -205,6 +204,64 @@
   }
   .callout .k{font-family:var(--mono); font-size:11px; color:var(--red); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px; display:block;}
   .callout p{font-family:var(--body); font-size:15.5px; color:var(--paper); font-weight:400; max-width:64ch;}
+
+  /* ---------- QUIZ INTERACTIVE SECTION ---------- */
+  .quiz-container {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 40px;
+    margin-top: 20px;
+  }
+  .quiz-start-btn, .quiz-next-btn {
+    background: var(--red);
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .quiz-start-btn:hover { background: #b0473d; transform: translateY(-1px); }
+  .quiz-next-btn { background: var(--gold); color: var(--bg-panel-2); }
+  .quiz-next-btn:hover { background: #dbae2c; }
+  
+  .quiz-option-btn {
+    width: 100%;
+    text-align: left;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line-soft);
+    padding: 16px;
+    border-radius: 6px;
+    color: var(--paper-dim);
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .quiz-option-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: rgba(201,162,39,0.05);
+    color: var(--paper);
+  }
+  .quiz-option-dot {
+    width: 8px; height: 8px; background: transparent; border: 2px solid var(--paper-faint); border-radius: 50%; margin-top: 6px; flex-shrink: 0;
+  }
+  .quiz-option-btn:hover .quiz-option-dot { border-color: var(--gold); }
+  
+  .hidden-box { display: none; }
+  
+  .quiz-exp-box {
+    padding: 20px; border-radius: 6px; margin: 24px 0; font-size: 14.5px; line-height: 1.6;
+  }
+  .quiz-exp-success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #a7f3d0; }
+  .quiz-exp-error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; }
 
   /* ---------- CONCLUSION ---------- */
   section.conclusion{
@@ -268,7 +325,6 @@
     letter-spacing:0.06em;
   }
 
-  /* reveal animation */
   .reveal{opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s ease;}
   .reveal.visible{opacity:1; transform:translateY(0);}
 
@@ -282,6 +338,7 @@
     .ref-list li{padding-left:38px;}
     .nav-links{display:none;}
     .wrap{padding:0 20px;}
+    .quiz-container{padding:20px;}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -301,6 +358,7 @@
       <li><a href="#p2">II. Kết Hợp</a></li>
       <li><a href="#p3">III. Phương Thức</a></li>
       <li><a href="#p4">IV. Bài Học VN</a></li>
+      <li><a href="#quiz-section">V. Thử Thách</a></li>
       <li><a href="#ketluan">Kết Luận</a></li>
       <li><a href="#thamkhao">Nguồn</a></li>
     </ul>
@@ -322,17 +380,14 @@
 
 <div class="flow-section wrap reveal">
   <svg class="flow-svg" viewBox="0 0 1040 300" xmlns="http://www.w3.org/2000/svg">
-    <!-- connecting lines -->
     <path class="flow-line flow-line-anim" d="M120,150 C 220,150 220,80 320,80" />
     <path class="flow-line flow-line-anim" d="M120,150 C 220,150 220,220 320,220" />
     <path class="flow-line flow-line-anim" d="M420,80 C 480,80 480,150 540,150" />
     <path class="flow-line flow-line-anim" d="M420,220 C 480,220 480,150 540,150" />
     <path class="flow-line flow-line-anim" d="M640,150 C 700,150 700,150 760,150" />
     <path class="flow-line flow-line-anim" d="M860,150 C 900,150 900,150 940,150" />
-    <!-- dependency loop back -->
     <path class="flow-line" stroke="#9c3f36" stroke-dasharray="3 4" d="M940,180 C 940,260 200,260 120,190" />
 
-    <!-- nodes -->
     <circle class="flow-node-circle" cx="90" cy="150" r="40"/>
     <text x="90" y="146" text-anchor="middle" class="flow-node-label">Ngân hàng</text>
     <text x="90" y="162" text-anchor="middle" class="flow-node-sub">tư bản tiền tệ</text>
@@ -362,7 +417,6 @@
   <div class="flow-caption">Sơ đồ dòng chảy tích hợp: từ tư bản ngân hàng đến vòng lặp phụ thuộc toàn cầu</div>
 </div>
 
-<!-- PART I -->
 <section class="part" id="p1">
   <div class="wrap">
     <div class="part-head reveal">
@@ -394,7 +448,6 @@
   </div>
 </section>
 
-<!-- PART II -->
 <section class="part" id="p2">
   <div class="wrap">
     <div class="part-head reveal">
@@ -426,7 +479,6 @@
   </div>
 </section>
 
-<!-- PART III -->
 <section class="part" id="p3">
   <div class="wrap">
     <div class="part-head reveal">
@@ -458,7 +510,6 @@
   </div>
 </section>
 
-<!-- PART IV -->
 <section class="part" id="p4">
   <div class="wrap">
     <div class="part-head reveal">
@@ -499,7 +550,67 @@
   </div>
 </section>
 
-<!-- CONCLUSION -->
+<section class="part" id="quiz-section">
+  <div class="wrap">
+    <div class="part-head reveal">
+      <div class="part-num">V</div>
+      <div class="part-titles">
+        <span class="part-kicker">Đánh giá năng lực</span>
+        <h2>Thử Thách Biện Chứng: Tư Bản Tài Chính & Quyền Lực Mềm</h2>
+      </div>
+    </div>
+    
+    <div class="quiz-container reveal">
+      <div id="start-screen" style="text-align: center; padding: 20px 0;">
+        <h3 style="font-family: var(--display); color: var(--gold); margin-bottom: 16px; font-size: 24px;">Trắc Nghiệm Biện Chứng Chuyên Sâu</h3>
+        <p style="color: var(--paper-dim); font-size: 15px; max-width: 600px; margin: 0 auto 24px; font-style: italic;">
+          "Hệ thống gồm 10 câu hỏi lý luận bám sát Chương 4 Kinh tế chính trị Mác - Lênin và bối cảnh chuyển đổi số tại Việt Nam."
+        </p>
+        <button onclick="startQuiz()" class="quiz-start-btn">BẮT ĐẦU THỬ THÁCH</button>
+      </div>
+
+      <div id="quiz-screen" class="hidden-box">
+        <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--paper-faint); border-bottom: 1px solid var(--line-soft); padding-bottom: 12px; margin-bottom: 20px;">
+          <span>TIẾN TRÌNH: <span id="current-index" style="color: var(--gold); font-weight: bold;">1</span>/10</span>
+          <span>ĐIỂM SỐ: <span id="current-score" style="color: #10b981; font-weight: bold;">0</span></span>
+        </div>
+        
+        <h4 id="question-text" style="font-family: var(--display); font-size: 19px; color: var(--paper); margin-bottom: 24px; font-weight: 600; line-height: 1.4;">
+          Đang tải câu hỏi...
+        </h4>
+
+        <div id="options-container"></div>
+
+        <div id="explanation-box" class="quiz-exp-box hidden-box">
+          <div style="font-family: var(--display); font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
+            <span id="result-status-icon"></span>
+            <span id="result-status-text"></span>
+          </div>
+          <p id="explanation-text"></p>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+          <button id="next-btn" onclick="nextQuestion()" class="quiz-next-btn hidden-box">CÂU TIẾP THEO →</button>
+        </div>
+      </div>
+
+      <div id="result-screen" class="hidden-box" style="text-align: center; padding: 20px 0;">
+        <h3 style="font-family: var(--display); color: var(--gold); font-size: 26px; margin-bottom: 8px;">Hoàn Thành Thử Thách!</h3>
+        <p style="font-family: var(--mono); font-size: 12px; color: var(--paper-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px;">Tổng kết năng lực lý luận biện chứng</p>
+        
+        <div style="background: var(--bg-panel-2); display: inline-block; padding: 24px 48px; border-radius: 8px; border: 1px solid var(--line-soft); margin-bottom: 24px;">
+          <div style="font-family: var(--mono); font-size: 44px; font-weight: bold; color: var(--paper);"><span id="final-score">0</span>/10</div>
+          <div id="rank-badge" style="font-family: var(--display); font-size: 14px; font-weight: bold; margin-top: 6px;">Hạng mục</div>
+        </div>
+
+        <p id="rank-desc" style="color: var(--paper-dim); font-size: 15px; max-width: 600px; margin: 0 auto 28px; line-height: 1.6;"></p>
+        
+        <button onclick="restartQuiz()" class="quiz-start-btn" style="background: transparent; border: 1px solid var(--paper-dim); color: var(--paper);">THỬ THÁCH LẠI</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="conclusion" id="ketluan">
   <div class="wrap reveal">
     <span class="part-kicker">Kết luận</span>
@@ -511,7 +622,7 @@
 <section class="part" id="thamkhao">
   <div class="wrap">
     <div class="part-head reveal">
-      <div class="part-num">V</div>
+      <div class="part-num">VI</div>
       <div class="part-titles">
         <span class="part-kicker">Nguồn & phương pháp</span>
         <h2>Danh mục tham khảo và công cụ AI hỗ trợ</h2>
@@ -523,28 +634,28 @@
       <ol class="ref-list">
         <li>
           <span class="ref-author">V.I. Lênin</span> (1916), <em>Chủ nghĩa đế quốc, giai đoạn tột cùng của chủ nghĩa tư bản</em>, NXB Chính trị quốc gia Sự thật.
-          <a href="https://archive.org/details/chu-nghia-de-quoc-giai-doan-tot-cung-cua-chu-nghia-tu-ban">link</a>
+          <a href="https://archive.org/details/chu-nghia-de-quoc-giai-doan-tot-cung-cua-chu-nghia-tu-ban" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
         </li>
         <li>
           <span class="ref-author">Bộ Giáo dục và Đào tạo</span> (2021), <em>Giáo trình Kinh tế chính trị Mác - Lênin</em> (Dành cho bậc đại học — hệ không chuyên lý luận chính trị), NXB Chính trị quốc gia Sự thật.
-          <a href="https://drive.google.com/file/d/1-SeulTGqLGFahp_34Bs7AN6TGdG9o_60/view">link</a>
+          <a href="https://drive.google.com/file/d/1-SeulTGqLGFahp_34Bs7AN6TGdG9o_60/view" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
         </li>
         <li>
-          <span class="ref-author">Đảng Cộng sản Việt Nam</span> (2021), <em>Văn kiện Đại hội đại biểu toàn quốc lần thứ XIII</em>, NXB Chính trị quốc gia Sự thật.
-          <a href="https://tulieuvankien.dangcongsan.vn/van-kien-tu-lieu-ve-dang/book/sach-chinh-tri/van-kien-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-tap-1-403">link 1</a>
-          <a href="https://tulieuvankien.dangcongsan.vn/van-kien-tu-lieu-ve-dang/book/sach-chinh-tri/van-kien-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-tap-2-404">link 2</a>
+          <span class="ref-author">Đảng Cộng sản Việt Nam</span> (2021), <em>Vavan kiện Đại hội đại biểu toàn quốc lần thứ XIII</em>, NXB Chính trị quốc gia Sự thật.
+          <a href="https://tulieuvankien.dangcongsan.vn/van-kien-tu-lieu-ve-dang/book/sach-chinh-tri/van-kien-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-tap-1-403" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link 1</a>
+          <a href="https://tulieuvankien.dangcongsan.vn/van-kien-tu-lieu-ve-dang/book/sach-chinh-tri/van-kien-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-tap-2-404" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link 2</a>
         </li>
         <li>
           <span class="ref-author">Hà Lan Anh</span> (2026), "Xây dựng Nghị định về Fintech: Cân bằng các mục tiêu ổn định tài chính, thúc đẩy sáng tạo và bảo vệ người tiêu dùng tài chính", <em>Tạp chí Ngân hàng</em>, số 11/2026.
-          <a href="https://tapchinganhang.gov.vn/xay-dung-nghi-dinh-ve-fintech-can-bang-cac-muc-tieu-on-dinh-tai-chinh-thuc-day-sang-tao-va-bao-ve-nguoi-tieu-dung-tai-chinh-9577.html">link</a>
+          <a href="https://tapchinganhang.gov.vn/xay-dung-nghi-dinh-ve-fintech-can-bang-cac-muc-tieu-on-dinh-tai-chinh-thuc-day-sang-tao-va-bao-ve-nguoi-tieu-dung-tai-chinh-9577.html" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
         </li>
         <li>
           <span class="ref-author">PGS. TS. Đặng Thu Thủy & TS. Nguyễn Trung Hậu</span> (2024), "An ninh tài chính, tiền tệ của Việt Nam đến năm 2030 và khuyến nghị chính sách", Đề tài nghiên cứu cấp quốc gia: <em>Cạnh tranh chiến lược Mỹ - Trung: Tác động và đối sách của Việt Nam</em> (Mã số: KX.04.37/21-25).
-          <a href="https://tapchinganhang.gov.vn/an-ninh-tai-chinh-tien-te-cua-viet-nam-den-nam-2030-va-khuyen-nghi-chinh-sach-695.html">link</a>
+          <a href="https://tapchinganhang.gov.vn/an-ninh-tai-chinh-tien-te-cua-viet-nam-den-nam-2030-va-khuyen-nghi-chinh-sach-695.html" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
         </li>
         <li>
           <span class="ref-author">Tạp chí Ngân hàng</span> (2026), "An ninh, bảo mật khi áp dụng AI và Blockchain trong hoạt động ngân hàng số", Chuyên đề đặc biệt Quý 2 năm 2026.
-          <a href="https://tapchinganhang.gov.vn/an-ninh-bao-mat-khi-ap-dung-ai-va-blockchain-trong-hoat-dong-ngan-hang-so-9263.html">link</a>
+          <a href="https://tapchinganhang.gov.vn/an-ninh-bao-mat-khi-ap-dung-ai-va-blockchain-trong-hoat-dong-ngan-hang-so-9263.html" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
         </li>
       </ol>
     </div>
@@ -570,6 +681,7 @@
 </footer>
 
 <script>
+  // Hiệu ứng cuộn Reveal phần tử
   const els = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
@@ -577,6 +689,245 @@
     });
   }, {threshold:0.12});
   els.forEach(el=>io.observe(el));
+
+  // Dữ liệu câu hỏi trắc nghiệm lý luận
+  const quizData = [
+    {
+      q: "Theo lý luận của V.I. Lênin, bản chất cốt lõi của 'Tư bản tài chính' là gì?",
+      a: "Sự thâm nhập, hòa hợp và kết hợp lẫn nhau giữa tư bản ngân hàng độc quyền và tư bản công nghiệp độc quyền.",
+      options: [
+        "Sự thống trị tuyệt đối của các nhà tài phiệt ngân hàng đối với toàn bộ thị trường tiền tệ quốc tế.",
+        "Sự thâm nhập, hòa hợp và kết hợp lẫn nhau giữa tư bản ngân hàng độc quyền và tư bản công nghiệp độc quyền.",
+        "Sự chuyển dịch dòng vốn đầu tư trực tiếp nước ngoài từ nước phát triển sang nước đang phát triển.",
+        "Sự thao túng của các tổ chức tài chính đa quốc gia như IMF và World Bank vào nền kinh tế vĩ mô."
+      ],
+      explain: "Bản chất của tư bản tài chính không phải là sự triệt tiêu một bên, mà là sự thâm nhập chéo, hòa hợp giữa tổ chức độc quyền ngân hàng và tổ chức độc quyền công nghiệp."
+    },
+    {
+      q: "Hình thức nào dưới đây đóng vai trò là 'công cụ vận hành tối thượng' giúp tư bản tài chính bành trướng quyền lực kiểm soát?",
+      a: "Hệ thống tham dự (Holding System).",
+      options: [
+        "Hợp đồng xuất khẩu tư bản thông thường.",
+        "Cơ chế tự do cạnh tranh hoàn hảo.",
+        "Hệ thống tham dự (Holding System).",
+        "Mô hình cho vay tín dụng ưu đãi (ODA)."
+      ],
+      explain: "Thông qua 'Hệ thống tham dự', một tập đoàn mẹ nắm cổ phần chi phối công ty con, công ty con chi phối công ty cháu... tạo nên mạng lưới quyền lực thao túng dòng vốn khổng lồ bằng lượng vốn tự có rất nhỏ."
+    },
+    {
+      q: "In kỷ nguyên kinh tế số và toàn cầu hóa, sự kết hợp 'Tam khối' tạo nên tư bản tài chính hiện đại bao gồm các thành tố nào?",
+      a: "Tư bản Công nghiệp - Tư bản Thương nghiệp (Công nghệ) - Tư bản Ngân hàng (Fintech).",
+      options: [
+        "Tư bản Nông nghiệp - Tư bản Công nghiệp - Tư bản Thương nghiệp toàn cầu.",
+        "Tư bản Công nghiệp - Tư bản Thương nghiệp (Công nghệ) - Tư bản Ngân hàng (Fintech).",
+        "Tư bản Nhà nước - Tư bản Tư nhân - Quỹ đầu tư mạo hiểm quốc tế.",
+        "Tư bản Đầu cơ bất động sản - Thị trường chứng khoán - Hệ thống ví điện tử."
+      ],
+      explain: "Sự phát triển của Big Tech và Fintech đã mở rộng lý luận gốc của Lênin. Tư bản tài chính ngày nay là sự tích hợp chặt chẽ giữa Sản xuất (Công nghiệp), Nền tảng phân phối dữ liệu (Thương nghiệp/Công nghệ), và Ví/Sàn thanh toán (Ngân hàng/Fintech)."
+    },
+    {
+      q: "Hệ quả nguy hiểm nhất từ quyền lực mềm của các hệ sinh thái độc quyền (Ecosystem) xuyên biên giới đối với các nước đang phát triển là gì?",
+      a: "Tạo ra hiệu ứng 'Khóa chặt' (Lock-in effect), đẩy doanh nghiệp và người tiêu dùng bản địa vào thế phụ thuộc công nghệ và tài chính.",
+      options: [
+        "Làm gia tăng tỷ lệ lạm phát phi mã của nền kinh tế nội địa.",
+        "Tạo ra hiệu ứng 'Khóa chặt' (Lock-in effect), đẩy doanh nghiệp và người tiêu dùng bản địa vào thế phụ thuộc công nghệ và tài chính.",
+        "Ngăn cản hoàn toàn dòng vốn đầu tư trực tiếp nước ngoài (FDI) đổ vào quốc gia.",
+        "Ép buộc các quốc gia phải thay đổi thể chế chính trị ngay lập tức theo hướng phương Tây."
+      ],
+      explain: "Các hệ sinh thái như Apple, Amazon, Alphabet bủa vây người dùng bằng sự tiện lợi, nhưng bản chất là quyền lực mềm bẫy cấu trúc, khiến doanh nghiệp bản địa bị phụ thuộc sâu sắc vào hạ tầng số của họ."
+    },
+    {
+      q: "Để thích ứng chủ động trước sự bành trướng của Fintech xuyên biên giới, Việt Nam đang khẩn trương xây dựng cơ chế quản lý nào?",
+      a: "Cơ chế thử nghiệm có kiểm soát (Regulatory Sandbox) trong lĩnh vực ngân hàng.",
+      options: [
+        "Cơ chế đóng cửa hoàn toàn không cho các ứng dụng Fintech nước ngoài hoạt động.",
+        "Cơ chế thả nổi hoàn toàn để kích thích đổi mới sáng tạo không giới hạn.",
+        "Cơ chế thử nghiệm có kiểm soát (Regulatory Sandbox) trong lĩnh vực ngân hàng.",
+        "Cơ chế áp thuế đặc biệt ở mức 100% đối với mọi giao dịch ví điện tử ngoại."
+      ],
+      explain: "Theo tinh thần Nghị quyết 100/NQ-CP, Regulatory Sandbox là giải pháp giúp Việt Nam vừa thúc đẩy đổi mới sáng tạo, vừa cân bằng ổn định an toàn tài chính vĩ mô và bảo vệ người tiêu dùng."
+    },
+    {
+      q: "Hiện tượng một số Startup công nghệ Việt Nam phải đăng ký pháp nhân tại Singapore (Flip Startup) để gọi vốn quốc tế phản ánh điều gì?",
+      a: "Sự rò rỉ chủ quyền số và khoảng cách pháp lý giữa thể chế trong nước với luật chơi tài chính toàn cầu.",
+      options: [
+        "Các doanh nghiệp này không có lòng yêu nước và muốn né tránh nghĩa vụ thuế.",
+        "Sự rò rỉ chủ quyền số và khoảng cách pháp lý giữa thể chế trong nước với luật chơi tài chính toàn cầu.",
+        "Nền kinh tế Việt Nam hoàn toàn không có nhu cầu phát triển công nghệ cao.",
+        "Sự sụp đổ tất yếu của hệ thống tài chính tín dụng quốc gia."
+      ],
+      explain: "Flip Startup là hồi chuông cảnh báo về việc hệ thống thể chế tài chính trong nước chưa hoàn thiện, vô tình khiến các giá trị thặng dư trí tuệ, dòng vốn và dữ liệu của Việt Nam bị dịch chuyển ra nước ngoài."
+    },
+    {
+      q: "Thuật ngữ 'Vốn nóng' (Hot money) được hiểu như thế nào trong bối cảnh rủi ro an ninh tiền tệ?",
+      a: "Dòng vốn đầu tư gián tiếp lưu chuyển cực nhanh qua thị trường chứng khoán, tiền tệ nhằm đầu cơ ngắn hạn và có thể rút chạy tức thì.",
+      options: [
+        "Dòng vốn FDI giải ngân vào các nhà máy luyện kim có nhiệt độ cao.",
+        "Các khoản vay dài hạn ưu đãi từ Ngân hàng Thế giới cho hạ tầng giao thông.",
+        "Dòng vốn đầu tư gián tiếp lưu chuyển cực nhanh qua thị trường chứng khoán, tiền tệ nhằm đầu cơ ngắn hạn và có thể rút chạy tức thì.",
+        "Lượng tiền mặt lưu thông vượt quá mức cung tiền của Ngân hàng Nhà nước."
+      ],
+      explain: "Vốn nóng mang tính chất đầu cơ cao. Khi có biến động, dòng vốn này có thể rút nhanh hàng tỷ USD chỉ bằng một click chuột, gây tổn thương trực tiếp đến tỷ giá và an ninh tiền tệ quốc gia."
+    },
+    {
+      q: "Theo định hướng Đại hội XIII của Đảng, muốn xây dựng nền kinh tế độc lập, tự chủ trong bối cảnh hội nhập mở, yếu tố cốt lõi là gì?",
+      a: "Làm chủ công nghệ và chủ động, tích cực hội nhập, đa dạng hóa thị trường, nâng cao khả năng thích ứng của nền kinh tế.",
+      options: [
+        "Thực hiện chính sách đóng cửa biên giới, tự cung tự cấp như thời kỳ bao cấp.",
+        "Làm chủ công nghệ và chủ động, tích cực hội nhập, đa dạng hóa thị trường, nâng cao khả năng thích ứng của nền kinh tế.",
+        "Phụ thuộc hoàn toàn vào nguồn viện trợ và bảo hộ quân sự của các siêu cường.",
+        "Tập trung mọi nguồn lực chỉ để phát triển thị trường bất động sản đô thị."
+      ],
+      explain: "Văn kiện Đại hội XIII khẳng định độc lập, tự chủ kinh tế thời đại mới phải dựa trên năng lực nội sinh, làm chủ công nghệ lõi kết hợp đa dạng hóa thị trường để không bị rơi vào bẫy áp đặt tài chính."
+    },
+    {
+      q: "Khi đối diện với cuộc chiến thương mại và sự dịch chuyển chuỗi cung ứng ra khỏi Trung Quốc, Việt Nam có lợi thế chiến lược gì?",
+      a: "Là điểm đến tiềm năng thu hút các tập đoàn công nghệ dịch chuyển sản xuất nhờ vị trí địa lý và các FTA thế hệ mới.",
+      options: [
+        "Có nguồn tài nguyên khoáng sản thô vô tận và giá rẻ nhất thế giới.",
+        "Là điểm đến tiềm năng thu hút các tập đoàn công nghệ dịch chuyển sản xuất nhờ vị trí địa lý và các FTA thế hệ mới.",
+        "Hệ thống luật pháp lỏng lẻo, không kiểm soát khí thải bảo vệ môi trường.",
+        "Sở hữu các tổ chức độc quyền tài chính lớn mạnh vượt qua cả phố Wall."
+      ],
+      explain: "Vị trí địa lý chiến lược, sự ổn định chính trị cùng việc ký kết nhiều FTA thế hệ mới giúp Việt Nam đón nhận làn sóng dịch chuyển chuỗi cung ứng toàn cầu một cách chủ động."
+    },
+    {
+      q: "Hành vi bành trướng 'Quyền lực mềm' của tư bản tài chính độc quyền hiện đại thường được ngụy trang dưới danh nghĩa nào?",
+      a: "Các chuẩn mực kỹ thuật khắt khe, hàng rào vệ sinh (SPS), kiểm dịch thực vật và các quỹ hỗ trợ phát triển gắn liền điều kiện ràng buộc.",
+      options: [
+        "Xung đột vũ trang hoặc đe dọa sử dụng vũ lực quân sự trực diện.",
+        "Các chuẩn mực kỹ thuật khắt khe, hàng rào vệ sinh (SPS), kiểm dịch thực vật và các quỹ hỗ trợ phát triển gắn liền điều kiện ràng buộc.",
+        "Hủy bỏ hoàn toàn các hiệp định thương mại tự do đã ký kết.",
+        "Quốc hữu hóa toàn bộ tài sản của các quốc gia đang phát triển."
+      ],
+      explain: "Quyền lực mềm không dùng súng đạn mà dùng các công cụ tinh vi như hàng rào kỹ thuật, tiêu chuẩn độc quyền, cơ chế trói buộc vốn để điều khiển, chi phối các nước kém phát triển từ xa."
+    }
+  ];
+
+  let currentIndex = 0;
+  let score = 0;
+  let hasAnswered = false;
+
+  function startQuiz() {
+    document.getElementById('start-screen').classList.add('hidden-box');
+    document.getElementById('quiz-screen').classList.remove('hidden-box');
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    hasAnswered = false;
+    document.getElementById('next-btn').classList.add('hidden-box');
+    document.getElementById('explanation-box').classList.add('hidden-box');
+    
+    document.getElementById('current-index').innerText = currentIndex + 1;
+    document.getElementById('current-score').innerText = score;
+
+    const currentData = quizData[currentIndex];
+    document.getElementById('question-text').innerText = currentData.q;
+
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = '';
+
+    currentData.options.forEach((option) => {
+      const button = document.createElement('button');
+      button.className = "quiz-option-btn";
+      button.innerHTML = `
+        <span class="quiz-option-dot"></span>
+        <span>${option}</span>
+      `;
+      button.onclick = () => checkAnswer(button, option, currentData.a, currentData.explain);
+      optionsContainer.appendChild(button);
+    });
+  }
+
+  function checkAnswer(selectedButton, selectedOption, correctAnswer, explanation) {
+    if (hasAnswered) return;
+    hasAnswered = true;
+
+    const optionsContainer = document.getElementById('options-container');
+    const buttons = optionsContainer.getElementsByTagName('button');
+
+    for (let btn of buttons) {
+      btn.disabled = true;
+      if (btn.innerText.includes(correctAnswer)) {
+        btn.style.borderColor = "#10b981";
+        btn.style.background = "rgba(16, 185, 129, 0.08)";
+        btn.style.color = "#10b981";
+      } else {
+        btn.style.opacity = "0.3";
+      }
+    }
+
+    const expBox = document.getElementById('explanation-box');
+    const statusIcon = document.getElementById('result-status-icon');
+    const statusText = document.getElementById('result-status-text');
+
+    if (selectedOption === correctAnswer) {
+      score++;
+      document.getElementById('current-score').innerText = score;
+      expBox.className = "quiz-exp-box quiz-exp-success";
+      statusIcon.innerText = "✓";
+      statusText.innerText = "CHÍNH XÁC";
+    } else {
+      selectedButton.style.opacity = "1";
+      selectedButton.style.borderColor = "#ef4444";
+      selectedButton.style.background = "rgba(239, 68, 68, 0.08)";
+      selectedButton.style.color = "#ef4444";
+
+      expBox.className = "quiz-exp-box quiz-exp-error";
+      statusIcon.innerText = "✕";
+      statusText.innerText = "CHƯA CHÍNH XÁC";
+    }
+
+    document.getElementById('explanation-text').innerText = explanation;
+    expBox.classList.remove('hidden-box');
+    document.getElementById('next-btn').classList.remove('hidden-box');
+  }
+
+  function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < quizData.length) {
+      loadQuestion();
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    document.getElementById('quiz-screen').classList.add('hidden-box');
+    const resultScreen = document.getElementById('result-screen');
+    resultScreen.classList.remove('hidden-box');
+
+    document.getElementById('final-score').innerText = score;
+
+    const badge = document.getElementById('rank-badge');
+    const desc = document.getElementById('rank-desc');
+
+    if (score === 10) {
+      badge.innerText = "NHÀ BIỆN CHỨNG LỖI LẠC";
+      badge.style.color = "var(--gold)";
+      desc.innerText = "Tuyệt vời! Bạn nắm giữ tư duy lý luận cực kỳ sắc bén. Bạn hoàn toàn thấu hiểu bản chất vận động của tư bản tài chính và có tầm nhìn ứng xử chiến lược chuẩn xác cho kinh tế Việt Nam trong bối cảnh toàn cầu hóa.";
+    } else if (score >= 7) {
+      badge.innerText = "CHUYÊN GIA PHÂN TÍCH KINH TẾ VĨ MÔ";
+      badge.style.color = "#10b981";
+      desc.innerText = "Rất tốt! Bạn hiểu rõ cấu trúc của hệ thống tham dự, các mô hình hệ sinh thái công nghệ và cơ chế Regulatory Sandbox. Khả năng vận dụng lý thuyết vào thực tiễn Việt Nam của bạn đạt mức khá cao.";
+    } else if (score >= 5) {
+      badge.innerText = "HỌC VIÊN CÓ NỀN TẢNG";
+      badge.style.color = "var(--paper-dim)";
+      desc.innerText = "Đạt yêu cầu. Bạn nắm được định nghĩa cơ bản về tư bản tài chính và độc quyền. Tuy nhiên, bạn nên đọc kỹ hơn tài liệu Đại hội XIII và thực trạng Sandbox của Ngân hàng Nhà nước để phản xạ sắc sảo hơn.";
+    } else {
+      badge.innerText = "CẦN NGHIÊN CỨU LẠI GIÁO TRÌNH";
+      badge.style.color = "var(--red)";
+      desc.innerText = "Bạn chưa vượt qua thử thách. Bản chất tam khối hiện đại và các công cụ bành trướng quyền lực mềm tương đối phức tạp. Hãy xem lại Chương 4 Kinh tế chính trị và các tài liệu chuyên đề đính kèm để củng cố lại kiến thức.";
+    }
+  }
+
+  function restartQuiz() {
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('result-screen').classList.add('hidden-box');
+    document.getElementById('start-screen').classList.remove('hidden-box');
+  }
 </script>
 
 </body>
