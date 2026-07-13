@@ -3,932 +3,605 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tư Bản Tài Chính & Quyền Lực Mềm Của Độc Quyền</title>
+<title>Tư Bản Tài Chính Trong Kỷ Nguyên Số — Một Cuộc Triển Lãm Tư Duy v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;0,9..144,700;1,9..144,450&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
-  :root{
-    --bg:#0d1a23;
-    --bg-panel:#122431;
-    --bg-panel-2:#0a151d;
-    --paper:#ece3d0;
-    --paper-dim:#a79a80;
-    --paper-faint:#6d6552;
-    --gold:#c9a227;
-    --gold-soft:#8f7833;
-    --red:#9c3f36;
-    --line:rgba(201,162,39,0.22);
-    --line-soft:rgba(236,227,208,0.08);
-    --display:'Fraunces', serif;
-    --body:'IBM Plex Sans', sans-serif;
-    --mono:'IBM Plex Mono', monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--paper);
-    font-family:var(--body);
-    font-weight:300;
-    line-height:1.65;
-    overflow-x:hidden;
-  }
-  ::selection{background:var(--gold);color:var(--bg-panel-2);}
+:root{
+  --bg:#0A0B0D;
+  --surface:#14161B;
+  --surface-2:#1B1E24;
+  --gold:#C9A227;
+  --gold-soft:rgba(201,162,39,0.35);
+  --teal:#3FD9C7;
+  --teal-soft:rgba(63,217,199,0.3);
+  --ink:#EDEAE2;
+  --muted:#8A8D94;
+  --line:rgba(237,234,226,0.09);
+  --display:'Literata', serif;
+  --body:'Be Vietnam Pro', sans-serif;
+  --mono:'IBM Plex Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--body);
+  overflow-x:hidden;
+  cursor:none;
+}
+::selection{background:var(--gold-soft);color:var(--ink);}
 
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background-image:
-      radial-gradient(ellipse at 15% 0%, rgba(201,162,39,0.07), transparent 55%),
-      radial-gradient(ellipse at 85% 100%, rgba(156,63,54,0.06), transparent 55%);
-    pointer-events:none;
-    z-index:0;
-  }
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
 
-  .wrap{max-width:1120px; margin:0 auto; padding:0 32px; position:relative; z-index:1;}
+a:focus-visible, button:focus-visible, .card:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:4px;
+}
 
-  /* ---------- NAV ---------- */
-  nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(13,26,35,0.86);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line-soft);
-  }
-  .nav-inner{
-    max-width:1120px; margin:0 auto; padding:16px 32px;
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .brand{
-    font-family:var(--mono); font-size:12px; letter-spacing:0.14em;
-    color:var(--gold); text-transform:uppercase;
-  }
-  .nav-links{display:flex; gap:28px; list-style:none;}
-  .nav-links a{
-    font-family:var(--mono); font-size:11.5px; letter-spacing:0.08em;
-    color:var(--paper-dim); text-decoration:none; text-transform:uppercase;
-    transition:color .25s;
-  }
-  .nav-links a:hover{color:var(--gold);}
+/* ---------- custom cursor ---------- */
+.cursor{
+  position:fixed; top:0; left:0; width:10px; height:10px; border-radius:50%;
+  background:var(--gold); pointer-events:none; z-index:999; mix-blend-mode:difference;
+  transform:translate(-50%,-50%);
+}
+.cursor-ring{
+  position:fixed; top:0; left:0; width:34px; height:34px; border-radius:50%;
+  border:1px solid var(--teal); pointer-events:none; z-index:998;
+  transform:translate(-50%,-50%); transition:width .25s ease, height .25s ease, opacity .25s ease, border-color .25s ease;
+}
+@media (max-width:860px){ .cursor,.cursor-ring{display:none;} body{cursor:auto;} }
 
-  /* ---------- HERO ---------- */
-  header.hero{
-    padding:120px 0 90px;
-    position:relative;
-    border-bottom:1px solid var(--line-soft);
-    overflow:hidden;
-  }
-  .eyebrow{
-    font-family:var(--mono); font-size:12px; letter-spacing:0.18em;
-    color:var(--gold); text-transform:uppercase; margin-bottom:28px;
-    display:flex; align-items:center; gap:12px;
-  }
-  .eyebrow::before{content:""; width:32px; height:1px; background:var(--gold);}
+/* ---------- background texture ---------- */
+.grain{
+  position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.field-glow{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 700px 500px at 12% 8%, rgba(201,162,39,0.08), transparent 60%),
+    radial-gradient(ellipse 800px 600px at 88% 82%, rgba(63,217,199,0.07), transparent 60%);
+}
 
-  h1.title{
-    font-family:var(--display);
-    font-weight:600;
-    font-size:clamp(2.5rem, 6vw, 4.6rem);
-    line-height:1.04;
-    color:var(--paper);
-    max-width:16ch;
-    letter-spacing:-0.01em;
-  }
-  h1.title em{
-    font-style:italic; font-weight:450; color:var(--gold);
-  }
-  .subtitle{
-    font-family:var(--body); font-weight:300; font-size:18px;
-    color:var(--paper-dim); max-width:52ch; margin-top:26px;
-  }
-  .hero-meta{
-    display:flex; gap:40px; margin-top:56px; flex-wrap:wrap;
-  }
-  .meta-item{font-family:var(--mono); font-size:12px; color:var(--paper-faint);}
-  .meta-item b{display:block; font-family:var(--body); font-weight:500; color:var(--paper); font-size:14.5px; margin-top:4px;}
+/* ---------- nav ---------- */
+.dotnav{
+  position:fixed; right:2.4rem; top:50%; transform:translateY(-50%); z-index:60;
+  display:flex; flex-direction:column; gap:1.4rem; align-items:flex-end;
+}
+.dotnav a{
+  display:flex; align-items:center; gap:.6rem; text-decoration:none;
+  color:var(--muted); font-family:var(--mono); font-size:.68rem; letter-spacing:.08em;
+}
+.dotnav .lbl{opacity:0; transform:translateX(6px); transition:opacity .3s ease, transform .3s ease;}
+.dotnav a:hover .lbl, .dotnav a.active .lbl{opacity:1; transform:translateX(0); color:var(--ink);}
+.dotnav .dot{width:7px; height:7px; border-radius:50%; background:var(--line); border:1px solid var(--muted); transition:all .3s ease;}
+.dotnav a.active .dot{background:var(--gold); border-color:var(--gold); box-shadow:0 0 10px var(--gold-soft);}
+@media (max-width:860px){ .dotnav{display:none;} }
 
-  /* ---------- FLOW DIAGRAM ---------- */
-  .flow-section{padding:70px 0 40px;}
-  .flow-caption{
-    font-family:var(--mono); font-size:11.5px; color:var(--paper-faint);
-    text-transform:uppercase; letter-spacing:0.1em; text-align:center; margin-top:18px;
-  }
-  .flow-svg{width:100%; height:auto; display:block;}
-  .flow-node-label{font-family:var(--mono); font-size:12.5px; fill:var(--paper); text-transform:uppercase; letter-spacing:0.04em;}
-  .flow-node-sub{font-family:var(--body); font-size:10.5px; fill:var(--paper-faint);}
-  .flow-line{stroke:var(--gold); stroke-width:1.4; fill:none; stroke-dasharray:6 5; opacity:0.75;}
-  .flow-line-anim{animation:dash 22s linear infinite;}
-  @keyframes dash{to{stroke-dashoffset:-400;}}
-  .flow-node-circle{fill:var(--bg-panel); stroke:var(--gold); stroke-width:1.2;}
-  .flow-node-circle.warn{stroke:var(--red);}
-  .flow-loop-label{font-family:var(--mono); font-size:10.5px; fill:var(--red); letter-spacing:0.06em;}
+.brandmark{
+  position:fixed; top:2.2rem; left:2.4rem; z-index:60; font-family:var(--mono);
+  font-size:.7rem; letter-spacing:.14em; color:var(--muted); text-transform:uppercase;
+}
+.brandmark b{color:var(--ink); font-weight:500;}
 
-  /* ---------- SECTION SCAFFOLD ---------- */
-  section.part{
-    padding:110px 0;
-    border-bottom:1px solid var(--line-soft);
-    position:relative;
-  }
-  .part-head{
-    display:grid; grid-template-columns:120px 1fr; gap:28px; margin-bottom:56px;
-    align-items:baseline;
-  }
-  .part-num{
-    font-family:var(--display); font-style:italic; font-weight:450;
-    font-size:64px; color:transparent;
-    -webkit-text-stroke:1px var(--gold);
-    line-height:1;
-  }
-  .part-titles h2{
-    font-family:var(--display); font-weight:600; font-size:clamp(1.7rem,3.4vw,2.6rem);
-    color:var(--paper); letter-spacing:-0.01em;
-  }
-  .part-titles .part-kicker{
-    font-family:var(--mono); font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase;
-    color:var(--gold-soft); margin-bottom:10px; display:block;
-  }
+/* ---------- layout helpers ---------- */
+section{position:relative; z-index:2; padding:9rem 8vw; min-height:100vh; display:flex; flex-direction:column; justify-content:center;}
+@media (max-width:860px){ section{padding:6rem 6vw;} }
+.eyebrow{
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.18em; color:var(--teal);
+  text-transform:uppercase; display:flex; align-items:center; gap:.8rem; margin-bottom:1.6rem;
+}
+.eyebrow::before{content:''; width:28px; height:1px; background:var(--teal);}
+h2.headline{
+  font-family:var(--display); font-weight:500; line-height:1.15;
+  font-size:clamp(2rem, 3.8vw, 3.8rem); max-width:26ch; color:var(--ink);
+}
+.section-index{
+  position:absolute; top:6.5rem; right:8vw; font-family:var(--mono); font-size:.72rem;
+  color:var(--muted); letter-spacing:.1em;
+}
+.lede{
+  font-size:1.05rem; line-height:1.75; color:var(--muted); max-width:68ch; margin-top:1.6rem;
+}
+.lede b, .lede strong{color:var(--ink); font-weight:500;}
 
-  .lede{
-    font-family:var(--body); font-weight:300; font-size:17px; color:var(--paper-dim);
-    max-width:70ch; margin-bottom:48px;
-  }
+/* ---------- hero ---------- */
+.hero{
+  min-height:100vh; 
+  padding:8rem 8vw 4rem 8vw; 
+  display:grid; 
+  grid-template-columns: 1.05fr 0.95fr; 
+  align-items: center; 
+  gap: 3rem; 
+  position:relative;
+}
+.hero-inner{
+  z-index:3;
+  text-align: left;
+}
+.kicker{
+  font-family:var(--mono); font-size:.75rem; letter-spacing:.22em; color:var(--gold);
+  text-transform:uppercase; margin-bottom:1.6rem; opacity:0;
+}
+.hero h1{
+  font-family:var(--display); font-weight:500; line-height:1.08;
+  font-size:clamp(2.2rem, 4.8vw, 4.4rem); color:var(--ink);
+}
+.hero h1 em{font-style:italic; color:var(--gold);}
+.hero p.sub{
+  margin-top:1.8rem; font-size:1.05rem; color:var(--muted);
+  line-height:1.7; max-width:54ch;
+}
+.hero-svg-wrap{
+  position: relative; 
+  width: 100%; 
+  max-width: 580px;
+  margin: 0 auto;
+  z-index:2; 
+  opacity:0.9;
+}
+.hero-svg-wrap svg{width:100%; height:auto; display: block;}
 
-  /* concept cards */
-  .card-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft);}
-  .card{
-    background:var(--bg-panel); padding:36px 34px;
-    transition:background .3s;
+@media (max-width:1024px){
+  .hero{
+    grid-template-columns: 1fr;
+    padding-top: 7rem;
+    text-align: center;
+    gap: 2rem;
   }
-  .card:hover{background:var(--bg-panel-2);}
-  .card h3{
-    font-family:var(--display); font-weight:600; font-size:20px; color:var(--gold);
-    margin-bottom:14px;
+  .hero-inner{
+    text-align: center;
   }
-  .card p{font-size:15px; color:var(--paper-dim); font-weight:300;}
-  .card p + p{margin-top:12px;}
+  .hero p.sub { margin-left: auto; margin-right: auto; }
+}
 
-  /* triad panels */
-  .triad{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft);}
-  .triad-item{background:var(--bg-panel); padding:34px 28px; position:relative;}
-  .triad-index{
-    font-family:var(--mono); font-size:11px; color:var(--gold); letter-spacing:0.1em;
-    margin-bottom:16px; display:block;
-  }
-  .triad-item h4{
-    font-family:var(--display); font-weight:600; font-size:17.5px; color:var(--paper); margin-bottom:12px; line-height:1.3;
-  }
-  .triad-item p{font-size:14px; color:var(--paper-dim); font-weight:300;}
+.scrollcue{
+  position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); z-index:5;
+  display:flex; flex-direction:column; align-items:center; gap:.6rem; color:var(--muted);
+  font-family:var(--mono); font-size:.65rem; letter-spacing:.14em;
+}
+.scrollcue .line{width:1px; height:30px; background:linear-gradient(var(--teal), transparent); animation:scrolldrop 2s ease-in-out infinite;}
+@keyframes scrolldrop{0%{opacity:0; transform:scaleY(0.3); transform-origin:top;} 50%{opacity:1; transform:scaleY(1); transform-origin:top;} 100%{opacity:0; transform:scaleY(0.3); transform-origin:bottom;}}
 
-  /* pillars */
-  .pillars{display:flex; flex-direction:column; gap:0;}
-  .pillar{
-    display:grid; grid-template-columns:200px 1fr; gap:32px;
-    padding:32px 0; border-top:1px solid var(--line-soft);
-  }
-  .pillar:last-child{border-bottom:1px solid var(--line-soft);}
-  .pillar-tag{
-    font-family:var(--mono); font-size:11.5px; color:var(--gold); text-transform:uppercase; letter-spacing:0.08em;
-    align-self:start; padding-top:4px;
-  }
-  .pillar-body h4{
-    font-family:var(--display); font-weight:600; font-size:19px; color:var(--paper); margin-bottom:10px;
-  }
-  .pillar-body p{font-size:15px; color:var(--paper-dim); font-weight:300; max-width:68ch;}
-  .pillar-body p + p{margin-top:10px;}
+.node-label{font-family:var(--mono); font-size:11px; letter-spacing:.06em; fill:var(--muted);}
+.flow-path{fill:none; stroke-width:1.2; stroke-dasharray:6 10; animation:flowdash 3.5s linear infinite;}
+@keyframes flowdash{to{stroke-dashoffset:-160;}}
+.core-pulse{animation:pulse 3.2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.55; r:46;} 50%{opacity:.9; r:52;}}
 
-  /* quote / doctrine callout */
-  .callout{
-    margin:56px 0 0; padding:32px 36px;
-    border-left:2px solid var(--red);
-    background:linear-gradient(90deg, rgba(156,63,54,0.08), transparent);
-  }
-  .callout .k{font-family:var(--mono); font-size:11px; color:var(--red); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:10px; display:block;}
-  .callout p{font-family:var(--body); font-size:15.5px; color:var(--paper); font-weight:400; max-width:64ch;}
+/* ---------- diagram card shell ---------- */
+.stage{
+  margin-top:3.4rem; border:1px solid var(--line); border-radius:2px; background:var(--surface);
+  padding:clamp(1.5rem,4vw,3.5rem); position:relative; overflow:hidden;
+}
+.stage::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+}
 
-  /* ---------- QUIZ INTERACTIVE SECTION ---------- */
-  .quiz-container {
-    background: var(--bg-panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 40px;
-    margin-top: 20px;
-  }
-  .quiz-start-btn, .quiz-next-btn {
-    background: var(--red);
-    color: #fff;
-    font-family: var(--display);
-    font-weight: 600;
-    font-size: 16px;
-    padding: 14px 28px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-  }
-  .quiz-start-btn:hover { background: #b0473d; transform: translateY(-1px); }
-  .quiz-next-btn { background: var(--gold); color: var(--bg-panel-2); }
-  .quiz-next-btn:hover { background: #dbae2c; }
-  
-  .quiz-option-btn {
-    width: 100%;
-    text-align: left;
-    background: var(--bg-panel-2);
-    border: 1px solid var(--line-soft);
-    padding: 16px;
-    border-radius: 6px;
-    color: var(--paper-dim);
-    font-size: 14.5px;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    margin-bottom: 12px;
-  }
-  .quiz-option-btn:hover:not(:disabled) {
-    border-color: var(--gold);
-    background: rgba(201,162,39,0.05);
-    color: var(--paper);
-  }
-  .quiz-option-dot {
-    width: 8px; height: 8px; background: transparent; border: 2px solid var(--paper-faint); border-radius: 50%; margin-top: 6px; flex-shrink: 0;
-  }
-  .quiz-option-btn:hover .quiz-option-dot { border-color: var(--gold); }
-  
-  .hidden-box { display: none; }
-  
-  .quiz-exp-box {
-    padding: 20px; border-radius: 6px; margin: 24px 0; font-size: 14.5px; line-height: 1.6;
-  }
-  .quiz-exp-success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #a7f3d0; }
-  .quiz-exp-error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; }
+/* ---------- expandable cards ---------- */
+.cardgrid{display:grid; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:2.4rem;}
+.card{
+  background:var(--surface); padding:1.6rem 1.8rem; cursor:pointer; transition:background .25s ease;
+}
+.card:hover{background:var(--surface-2);}
+.card-head{display:flex; align-items:center; justify-content:space-between; gap:1rem;}
+.card-head h3{font-family:var(--display); font-weight:500; font-size:1.15rem; color:var(--ink);}
+.card-tag{font-family:var(--mono); font-size:.68rem; color:var(--teal); letter-spacing:#08em;}
+.card-plus{
+  width:22px; height:22px; position:relative; flex-shrink:0;
+}
+.card-plus::before, .card-plus::after{
+  content:''; position:absolute; background:var(--muted); transition:transform .3s ease, background .3s ease;
+}
+.card-plus::before{width:100%; height:1px; top:50%; left:0;}
+.card-plus::after{width:1px; height:100%; left:50%; top:0;}
+.card.open .card-plus::after{transform:scaleY(0);}
+.card.open .card-plus::before, .card.open .card-plus::after{background:var(--gold);}
+.card-body{
+  max-height:0; overflow:hidden; transition:max-height .5s cubic-bezier(.22,1,.36,1), margin-top .5s ease;
+}
+.card.open .card-body{max-height:400px; margin-top:1rem;}
+.card-body p{color:var(--muted); line-height:1.75; font-size:.95rem; max-width:68ch;}
 
-  /* ---------- CONCLUSION ---------- */
-  section.conclusion{
-    padding:130px 0 100px;
-    background:var(--bg-panel-2);
-    text-align:center;
-  }
-  .conclusion .part-kicker{
-    font-family:var(--mono); font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-soft);
-    display:block; margin-bottom:26px;
-  }
-  .conclusion blockquote{
-    font-family:var(--display); font-style:italic; font-weight:450;
-    font-size:clamp(1.5rem,3vw,2.1rem); color:var(--paper);
-    max-width:820px; margin:0 auto; line-height:1.45;
-  }
-  .conclusion blockquote .accent{color:var(--gold); font-style:normal; font-weight:600;}
-  .conclusion .sign{
-    margin-top:44px; font-family:var(--mono); font-size:12px; color:var(--paper-faint);
-    letter-spacing:0.08em; text-transform:uppercase;
-  }
+/* ---------- pyramid section ---------- */
+.pyramid-wrap{display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; margin-top:3rem;}
+@media (max-width:960px){
+  .pyramid-wrap{grid-template-columns:1fr;}
+  .pyramid-wrap .stage { order: 1; }
+  .pyramid-wrap .ratio-box { order: 2; }
+}
+.ratio-box{border:1px solid var(--line); padding:2rem; background:var(--surface); height: 100%; display: flex; flex-direction: column; justify-content: center;}
+.ratio-box .num{font-family:var(--display); font-size:3.2rem; color:var(--gold); line-height:1;}
+.ratio-box .cap{font-family:var(--mono); font-size:.7rem; color:var(--muted); letter-spacing:.1em; margin-top:.6rem;}
+.ratio-box p{margin-top:1.2rem; color:var(--muted); line-height:1.7; font-size:.92rem;}
 
-  /* ---------- REFERENCES ---------- */
-  .ref-block{margin-bottom:52px;}
-  .ref-block:last-child{margin-bottom:0;}
-  .ref-heading{
-    display:block; font-family:var(--mono); font-size:12px; letter-spacing:0.12em;
-    text-transform:uppercase; color:var(--gold); margin-bottom:22px;
-    padding-bottom:12px; border-bottom:1px solid var(--line);
-  }
-  .ref-list{list-style:none; counter-reset:ref;}
-  .ref-list li{
-    counter-increment:ref;
-    position:relative;
-    padding:18px 0 18px 46px;
-    border-top:1px solid var(--line-soft);
-    font-size:14.5px; color:var(--paper-dim); font-weight:300;
-    line-height:1.6;
-  }
-  .ref-list li:last-child{border-bottom:1px solid var(--line-soft);}
-  .ref-list li::before{
-    content:counter(ref, decimal-leading-zero);
-    position:absolute; left:0; top:18px;
-    font-family:var(--mono); font-size:12px; color:var(--gold-soft);
-  }
-  .ref-author{color:var(--paper); font-weight:500;}
-  .ref-list em{font-style:italic; color:var(--paper);}
+/* ---------- soft power rings ---------- */
+.ring-wrap{position:relative; display:grid; place-items:center; margin-top:2.5rem;}
+.satellite{
+  border:1px solid var(--line); background:var(--surface); padding:1.8rem; transition: background .3s ease, transform .3s ease;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.satellite:hover { background: var(--surface-2); transform: translateY(-4px); }
+.satellite .k{font-family:var(--mono); font-size:.75rem; color:var(--teal); letter-spacing:.08em; font-weight:500; margin-bottom: 0.8rem;}
+.satellite p{font-size:.92rem; color:var(--muted); line-height:1.7;}
+.sat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; margin-top:2.6rem;}
+@media (max-width:960px){.sat-grid{grid-template-columns:1fr;}}
 
-  .ai-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line-soft); border:1px solid var(--line-soft);}
-  .ai-item{
-    background:var(--bg-panel); padding:26px 30px;
-    display:flex; flex-direction:column; gap:8px;
-  }
-  .ai-name{font-family:var(--display); font-weight:600; font-size:19px; color:var(--gold);}
-  .ai-role{font-family:var(--body); font-size:14px; color:var(--paper-dim); font-weight:300;}
+/* ---------- pillars (VN) ---------- */
+.pillars{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:2.6rem;}
+@media (max-width:760px){...pillars{grid-template-columns:1fr;}}
+.pillar{background:var(--surface); padding:2.5rem; transition:background .3s ease;}
+.pillar:hover{background:var(--surface-2);}
+.pillar .pnum{font-family:var(--mono); font-size:.75rem; color:var(--gold); letter-spacing:.1em; font-weight: 500;}
+.pillar h3{font-family:var(--display); font-size:1.35rem; margin-top:.6rem; color:var(--ink); font-weight:500;}
+.pillar p{margin-top:.9rem; color:var(--muted); line-height:1.75; font-size:.95rem;}
+.pillar svg{width:32px; height:32px; margin-bottom:1rem; stroke:var(--teal); fill: none;}
 
-  /* ---------- FOOTER ---------- */
-  footer{
-    padding:44px 0; text-align:center;
-    font-family:var(--mono); font-size:11px; color:var(--paper-faint);
-    letter-spacing:0.06em;
-  }
+/* ---------- reference style ---------- */
+.ref-list {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.ref-item {
+  padding: 1rem 1.4rem;
+  border-left: 2px solid var(--gold);
+  background: rgba(20, 22, 27, 0.4);
+}
+.ref-item p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.ref-item a {
+  color: var(--teal);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  word-break: break-all;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+.ref-item a:hover { opacity: 0.8; text-decoration: underline; }
+.ai-badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.ai-badge {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.ai-badge b { color: var(--gold); font-weight: 500; }
 
-  .reveal{opacity:0; transform:translateY(22px); transition:opacity .8s ease, transform .8s ease;}
-  .reveal.visible{opacity:1; transform:translateY(0);}
+/* reveal utility */
+.reveal{opacity:0; transform:translateY(28px);}
 
-  @media (max-width:820px){
-    .part-head{grid-template-columns:1fr;}
-    .part-num{font-size:44px;}
-    .card-grid{grid-template-columns:1fr;}
-    .triad{grid-template-columns:1fr;}
-    .pillar{grid-template-columns:1fr; gap:10px;}
-    .ai-grid{grid-template-columns:1fr;}
-    .ref-list li{padding-left:38px;}
-    .nav-links{display:none;}
-    .wrap{padding:0 20px;}
-    .quiz-container{padding:20px;}
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .flow-line-anim{animation:none;}
-    .reveal{transition:none; opacity:1; transform:none;}
-    html{scroll-behavior:auto;}
-  }
+footer{
+  position:relative; z-index:2; padding:5rem 8vw 3.5rem; border-top:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:2.5rem; justify-content:space-between; align-items:flex-end;
+}
+footer .fnote{font-family:var(--mono); font-size:.7rem; color:var(--muted); letter-spacing:.06em; max-width:46ch; line-height:1.7;}
+footer .ftitle{font-family:var(--display); font-size:1.5rem; color:var(--ink);}
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <div class="brand">Tư Bản Tài Chính · Chuyên Đề</div>
-    <ul class="nav-links">
-      <li><a href="#p1">I. Lý Luận</a></li>
-      <li><a href="#p2">II. Kết Hợp</a></li>
-      <li><a href="#p3">III. Phương Thức</a></li>
-      <li><a href="#p4">IV. Bài Học VN</a></li>
-      <li><a href="#quiz-section">V. Thử Thách</a></li>
-      <li><a href="#ketluan">Kết Luận</a></li>
-      <li><a href="#thamkhao">Nguồn</a></li>
-    </ul>
-  </div>
+<div class="cursor"></div>
+<div class="cursor-ring"></div>
+<div class="grain"></div>
+<div class="field-glow"></div>
+
+<div class="brandmark">Kinh tế chính trị M–L</div>
+
+<nav class="dotnav">
+  <a href="#hero" data-i="hero"><span class="lbl">Mở đầu</span><span class="dot"></span></a>
+  <a href="#s1" data-i="s1"><span class="lbl">01 · Biện chứng dung hợp</span><span class="dot"></span></a>
+  <a href="#s2" data-i="s2"><span class="lbl">02 · Chế độ tham dự</span><span class="dot"></span></a>
+  <a href="#s3" data-i="s3"><span class="lbl">03 · Quyền lực mềm</span><span class="dot"></span></a>
+  <a href="#s4" data-i="s4"><span class="lbl">04 · Chiến lược Việt Nam</span><span class="dot"></span></a>
+  <a href="#s5" data-i="s5"><span class="lbl">05 · Minh bạch nguồn</span><span class="dot"></span></a>
 </nav>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">Kinh tế chính trị Mác — Lênin · Chuyên đề nghiên cứu</div>
-    <h1 class="title">Tư bản tài chính và <em>quyền lực mềm</em> của độc quyền</h1>
-    <p class="subtitle">Từ ngân hàng "vạn năng" của Lênin đến hệ sinh thái dữ liệu toàn cầu hôm nay — nhận diện cách thức tư bản độc quyền chi phối các nền kinh tế đang phát triển, và bài học tự chủ cho Việt Nam.</p>
-    <div class="hero-meta">
-      <div class="meta-item">Khung lý luận<b>V.I. Lênin — Chủ nghĩa đế quốc</b></div>
-      <div class="meta-item">Bối cảnh vận dụng<b>Kinh tế số & Cách mạng 4.0</b></div>
-      <div class="meta-item">Định hướng chính sách<b>Văn kiện Đại hội XIII</b></div>
-    </div>
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="kicker" id="heroKicker">Tác phẩm nghệ thuật số · Kinh tế chính trị Mác–Lênin</div>
+    <h1>Khi Vốn, Dữ liệu và <em>Hàng hóa</em><br>hợp nhất thành một</h1>
+    <p class="sub">Đối chiếu luận điểm gốc của V.I. Lênin về tư bản tài chính với cấu trúc độc quyền số toàn cầu của Big Tech, Fintech, E-commerce — và định hướng tự chủ chiến lược của Việt Nam.</p>
   </div>
-</header>
+  
+  <div class="hero-svg-wrap" id="heroSvgWrap">
+    <svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#C9A227" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#C9A227" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="400" cy="300" r="90" fill="url(#coreGlow)"/>
+      <path class="flow-path" id="pathAB" d="M210,180 C300,110 500,110 590,180" stroke="#3FD9C7"/>
+      <path class="flow-path" id="pathAC" d="M215,215 C260,320 340,390 380,415" stroke="#C9A227"/>
+      <path class="flow-path" id="pathBC" d="M585,215 C540,320 460,390 420,415" stroke="#3FD9C7"/>
+      <circle class="core-pulse" cx="400" cy="300" r="46" fill="none" stroke="#C9A227" stroke-width="1"/>
+      <circle cx="400" cy="300" r="30" fill="#14161B" stroke="#C9A227" stroke-width="1"/>
+      <text x="400" y="296" text-anchor="middle" class="node-label" fill="#EDEAE2" style="font-size:9px;">TƯ BẢN</text>
+      <text x="400" y="308" text-anchor="middle" class="node-label" fill="#EDEAE2" style="font-size:9px;">TÀI CHÍNH</text>
 
-<div class="flow-section wrap reveal">
-  <svg class="flow-svg" viewBox="0 0 1040 300" xmlns="http://www.w3.org/2000/svg">
-    <path class="flow-line flow-line-anim" d="M120,150 C 220,150 220,80 320,80" />
-    <path class="flow-line flow-line-anim" d="M120,150 C 220,150 220,220 320,220" />
-    <path class="flow-line flow-line-anim" d="M420,80 C 480,80 480,150 540,150" />
-    <path class="flow-line flow-line-anim" d="M420,220 C 480,220 480,150 540,150" />
-    <path class="flow-line flow-line-anim" d="M640,150 C 700,150 700,150 760,150" />
-    <path class="flow-line flow-line-anim" d="M860,150 C 900,150 900,150 940,150" />
-    <path class="flow-line" stroke="#9c3f36" stroke-dasharray="3 4" d="M940,180 C 940,260 200,260 120,190" />
+      <circle cx="200" cy="180" r="46" fill="#0A0B0D" stroke="#3FD9C7" stroke-width="1"/>
+      <text x="200" y="178" text-anchor="middle" class="node-label">CÔNG NGHIỆP</text>
+      <text x="200" y="192" text-anchor="middle" class="node-label">SỐ</text>
 
-    <circle class="flow-node-circle" cx="90" cy="150" r="40"/>
-    <text x="90" y="146" text-anchor="middle" class="flow-node-label">Ngân hàng</text>
-    <text x="90" y="162" text-anchor="middle" class="flow-node-sub">tư bản tiền tệ</text>
+      <circle cx="600" cy="180" r="46" fill="#0A0B0D" stroke="#3FD9C7" stroke-width="1"/>
+      <text x="600" y="178" text-anchor="middle" class="node-label">NGÂN HÀNG</text>
+      <text x="600" y="192" text-anchor="middle" class="node-label">SỐ</text>
 
-    <circle class="flow-node-circle" cx="370" cy="80" r="38"/>
-    <text x="370" y="76" text-anchor="middle" class="flow-node-label">Công nghiệp</text>
-    <text x="370" y="92" text-anchor="middle" class="flow-node-sub">Big Tech</text>
+      <circle cx="400" cy="440" r="46" fill="#0A0B0D" stroke="#C9A227" stroke-width="1"/>
+      <text x="400" y="438" text-anchor="middle" class="node-label">THƯƠNG NGHIỆP</text>
+      <text x="400" y="452" text-anchor="middle" class="node-label">SỐ</text>
+    </svg>
+  </div>
+  <div class="scrollcue"><span>CUỘN ĐỂ KHÁM PHÁ</span><span class="line"></span></div>
+</section>
 
-    <circle class="flow-node-circle" cx="370" cy="220" r="38"/>
-    <text x="370" y="216" text-anchor="middle" class="flow-node-label">Thương nghiệp</text>
-    <text x="370" y="232" text-anchor="middle" class="flow-node-sub">lưu thông toàn cầu</text>
+<section id="s1">
+  <div class="section-index">01 / 05</div>
+  <div class="eyebrow">Biện chứng hình thành</div>
+  <h2 class="headline reveal">Sự dung hợp Công — Thương — Ngân trong kỷ nguyên toàn cầu hóa</h2>
+  <p class="lede reveal">Theo lý luận của V.I. Lênin, sự hình thành <strong>tư bản tài chính (TBTC)</strong> tuân theo một tiến trình biện chứng khách quan từ sự tích tụ sản xuất và tiền tệ. Trong bối cảnh hiện đại, tiến trình này đã phát triển thành sự dung hợp mang tính hệ sinh thái khép kín của ba khối độc quyền.</p>
 
-    <circle class="flow-node-circle" cx="590" cy="150" r="46"/>
-    <text x="590" y="144" text-anchor="middle" class="flow-node-label">Tư bản tài chính</text>
-    <text x="590" y="160" text-anchor="middle" class="flow-node-sub">Big Data · AI · Blockchain</text>
-
-    <circle class="flow-node-circle" cx="800" cy="150" r="40"/>
-    <text x="800" y="146" text-anchor="middle" class="flow-node-label">Hệ sinh thái</text>
-    <text x="800" y="162" text-anchor="middle" class="flow-node-sub">khép kín</text>
-
-    <circle class="flow-node-circle warn" cx="965" cy="165" r="34"/>
-    <text x="965" y="161" text-anchor="middle" class="flow-node-label" fill="#e8d9c9">Nước đang</text>
-    <text x="965" y="175" text-anchor="middle" class="flow-node-sub">phát triển</text>
-
-    <text x="530" y="255" text-anchor="middle" class="flow-loop-label">↺ vòng lặp phụ thuộc công nghệ — tài chính</text>
-  </svg>
-  <div class="flow-caption">Sơ đồ dòng chảy tích hợp: từ tư bản ngân hàng đến vòng lặp phụ thuộc toàn cầu</div>
-</div>
-
-<section class="part" id="p1">
-  <div class="wrap">
-    <div class="part-head reveal">
-      <div class="part-num">I</div>
-      <div class="part-titles">
-        <span class="part-kicker">Cơ sở lý luận</span>
-        <h2>Tư bản tài chính và quyền lực mềm của độc quyền</h2>
-      </div>
-    </div>
-    <p class="lede reveal">Điểm xuất phát là lý luận kinh điển của Lênin về sự dung hợp giữa tư bản ngân hàng và tư bản công nghiệp — nhưng trong kỷ nguyên số, phương thức thực thi quyền lực của khối tư bản ấy đã đổi khác căn bản.</p>
-
-    <div class="card-grid reveal">
-      <div class="card">
-        <h3>Tư bản tài chính</h3>
-        <p>Sự tích tụ và tập trung tư bản trong công nghiệp lẫn ngân hàng làm hình thành các tổ chức độc quyền ở cả hai lĩnh vực.</p>
-        <p>Ngân hàng không còn là trung gian thanh toán đơn thuần — chúng nắm quyền lực "vạn năng", khống chế toàn bộ đời sống kinh tế – xã hội thông qua sự thâm nhập, hòa hợp và sáp nhập với tư bản công nghiệp độc quyền.</p>
+  <div class="stage reveal">
+    <p style="font-family: var(--mono); font-size: 0.75rem; color: var(--gold); text-transform: uppercase; margin-bottom: 1.5rem;">[Nhấp vào từng khối độc quyền dưới đây để mở rộng phân tích chuyên sâu]</p>
+    <div class="cardgrid">
+      <div class="card open">
+        <div class="card-head">
+          <h3>Tích tụ sản xuất dẫn đến độc quyền công nghiệp số (Big Tech)</h3>
+          <div style="display:flex; align-items:center; gap:1rem;"><span class="card-tag">Hạ tầng thuật toán &amp; AI</span><span class="card-plus"></span></div>
+        </div>
+        <div class="card-body"><p>Quá trình cạnh tranh khốc liệt làm các doanh nghiệp nhỏ bị đào thải, công nghệ và năng lực sản xuất cốt lõi tập trung vào tay các siêu tập đoàn (như Microsoft, Apple, Alphabet). Khối độc quyền này nắm giữ hạ tầng thuật toán, trí tuệ nhân tạo (AI) và Dữ liệu lớn (Big Data) – đóng vai trò là não bộ và công cụ kiểm soát xã hội.</p></div>
       </div>
       <div class="card">
-        <h3>Hệ thống tài phiệt</h3>
-        <p>Sự thống trị của tư bản tài chính tất yếu sinh ra một nhóm nhỏ tài phiệt chi phối cả đời sống kinh tế lẫn chính trị.</p>
-        <p>Công cụ chính là "hệ thống tham dự" (chế độ tham gia) cùng các thủ đoạn tài chính khác — cho phép kiểm soát nhiều thực thể chỉ với một phần vốn sở hữu.</p>
+        <div class="card-head">
+          <h3>Tích tụ tư bản tiền tệ dẫn đến độc quyền ngân hàng số (Fintech)</h3>
+          <div style="display:flex; align-items:center; gap:1rem;"><span class="card-tag">Quyền lực vạn năng thanh khoản</span><span class="card-plus"></span></div>
+        </div>
+        <div class="card-body"><p>Các định chế tài chính truyền thống (phố Wall) bắt tay và chuyển đổi thành các nền tảng Fintech, các cổng và mạng lưới thanh toán toàn cầu. Họ sở hữu thông tin tài khoản, kiểm soát dòng tiền và điều tiết nguồn vốn của mọi doanh nghiệp, nắm giữ "quyền lực vạn năng" về mặt thanh khoản.</p></div>
       </div>
-    </div>
-
-    <div class="callout reveal">
-      <span class="k">Bước ngoặt của thời đại</span>
-      <p>Nếu độc quyền truyền thống hành xử bằng sức mạnh cứng — thôn tính, áp đặt thực dân, vũ lực — thì trong toàn cầu hóa và Cách mạng công nghiệp 4.0, độc quyền chuyển sang quyền lực mềm: tiêu chuẩn công nghệ, nền tảng số, dòng vốn quỹ đầu tư quốc tế, định chế tài chính toàn cầu và luật pháp xuyên biên giới.</p>
-    </div>
-  </div>
-</section>
-
-<section class="part" id="p2">
-  <div class="wrap">
-    <div class="part-head reveal">
-      <div class="part-num">II</div>
-      <div class="part-titles">
-        <span class="part-kicker">Biện chứng thời đại số</span>
-        <h2>Sự kết hợp giữa các khối tư bản trong toàn cầu hóa</h2>
+      <div class="card">
+        <div class="card-head">
+          <h3>Sự thâm nhập của Độc quyền Thương nghiệp số (E-commerce &amp; Logistics)</h3>
+          <div style="display:flex; align-items:center; gap:1rem;"><span class="card-tag">Gia tốc chu chuyển tư bản</span><span class="card-plus"></span></div>
+        </div>
+        <div class="card-body"><p>Đây là mắt xích phân phối tối quan trọng trong thời đại số (như Amazon, Alibaba). Khối này không đứng độc lập mà là kênh gia tốc chu chuyển tư bản. Nó thu gom dữ liệu hành vi người dùng cuối truyền về cho khối Công nghiệp xử lý, đồng thời sử dụng cổng của khối Ngân hàng số để tất toán dòng tiền.</p></div>
       </div>
-    </div>
-    <p class="lede reveal">Vận dụng lý luận Lênin vào bối cảnh hôm nay, mối liên kết giữa các khối tư bản không còn gói gọn trong biên giới quốc gia — nó biến đổi qua ba biểu hiện chính.</p>
-
-    <div class="triad reveal">
-      <div class="triad-item">
-        <span class="triad-index">01 — Tích hợp toàn diện</span>
-        <h4>Công nghiệp · Thương nghiệp · Ngân hàng</h4>
-        <p>Apple, Amazon, Alphabet, Tencent vừa sản xuất phần cứng – phần mềm, vừa làm chủ hệ thống lưu thông hàng hóa lớn nhất thế giới, vừa tự phát triển ví điện tử và ngân hàng số — tạo ra siêu tập đoàn kiểm soát trọn chuỗi từ sản xuất đến thanh toán.</p>
-      </div>
-      <div class="triad-item">
-        <span class="triad-index">02 — Công cụ vận hành</span>
-        <h4>Big Data và Trí tuệ nhân tạo</h4>
-        <p>Dòng tư bản tài chính hiện đại chảy theo dòng chảy dữ liệu. AI và Blockchain giúp tổ chức tài chính dự đoán chính xác hành vi tiêu dùng, tối ưu hóa lợi nhuận độc quyền ở quy mô toàn cầu.</p>
-      </div>
-      <div class="triad-item">
-        <span class="triad-index">03 — Hệ quả</span>
-        <h4>Hệ sinh thái khép kín</h4>
-        <p>Tư bản tài chính không chỉ cho vay từ bên ngoài mà trực tiếp kiến tạo hệ sinh thái khép kín — cuốn người tiêu dùng và doanh nghiệp nhỏ ở nước đang phát triển vào vòng lặp phụ thuộc cả công nghệ lẫn tài chính.</p>
+      <div class="card">
+        <div class="card-head">
+          <h3>Bản chất sự dung hợp: Hệ sinh thái độc quyền (Monopoly Ecosystem)</h3>
+          <div style="display:flex; align-items:center; gap:1rem;"><span class="card-tag">Xâm nhập chéo toàn cầu</span><span class="card-plus"></span></div>
+        </div>
+        <div class="card-body"><p>Sự phụ thuộc và xâm nhập chéo (sở hữu cổ phần chéo, cử người vào ban quản trị của nhau) giữa 3 khối này đã tạo nên một hình thái TBTC hiện đại. Đó là một Hệ sinh thái độc quyền khép kín (Monopoly Ecosystem), nơi ranh giới giữa sản xuất công nghệ, xử lý dòng tiền và phân phối hàng hóa bị xóa nhòa nhằm tối đa hóa việc chiếm đoạt giá trị thặng dư trên phạm vi toàn cầu.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="part" id="p3">
-  <div class="wrap">
-    <div class="part-head reveal">
-      <div class="part-num">III</div>
-      <div class="part-titles">
-        <span class="part-kicker">Cơ chế chi phối</span>
-        <h2>Phương thức của tư bản tài chính hiện đại</h2>
-      </div>
-    </div>
-    <p class="lede reveal">Ba công cụ tinh vi mà tư bản tài chính hiện đại sử dụng để bành trướng sức mạnh độc quyền tại các nền kinh tế đang phát triển.</p>
+<section id="s2">
+  <div class="section-index">02 / 05</div>
+  <div class="eyebrow">Cơ chế chi phối</div>
+  <h2 class="headline reveal">Hệ thống tài phiệt thao túng thông qua "Chế độ tham dự"</h2>
+  <p class="lede reveal">Sự thống trị của liên minh độc quyền Công - Thương - Ngân tất yếu dẫn đến sự thao túng của một nhóm nhỏ tài phiệt (Oligarchy) đối với toàn bộ đời sống kinh tế - chính trị thông qua vũ khí tài chính tinh vi là <strong>Chế độ tham dự (Holding System)</strong>.</p>
 
-    <div class="triad reveal">
-      <div class="triad-item">
-        <span class="triad-index">Quỹ đầu tư quốc tế</span>
-        <h4>Venture Capital / Private Equity</h4>
-        <p>Định hướng dòng vốn toàn cầu, quyết định sự "sống – còn" của startup. Bơm vốn ồ ạt để chiếm thị phần, hoặc đột ngột rút vốn — gây lũng đoạn, mất ổn định thị trường nội địa.</p>
-      </div>
-      <div class="triad-item">
-        <span class="triad-index">Thị trường xuyên biên giới</span>
-        <h4>Chứng khoán & "tư bản giả"</h4>
-        <p>Dòng "vốn nóng" (hot money) dịch chuyển liên tục, tạo bong bóng tài sản — kéo theo nguy cơ khủng hoảng nếu hệ thống giám sát nước sở tại yếu kém.</p>
-      </div>
-      <div class="triad-item">
-        <span class="triad-index">Biểu hiện mới nhất</span>
-        <h4>Fintech & Ngân hàng số</h4>
-        <p>Khi chưa có khung pháp lý điều chỉnh toàn diện, các giải pháp tài chính mới dễ dàng xâm nhập, định hình thói quen tiêu dùng, khai thác dữ liệu quốc gia và tạo lệ thuộc hạ tầng công nghệ.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  <div class="pyramid-wrap">
+    <div class="stage reveal" style="margin-top:0;">
+      <svg viewBox="0 0 520 380" width="100%" aria-hidden="true">
+        <line x1="260" y1="60" x2="140" y2="150" stroke="#8A8D94" stroke-opacity=".4"/>
+        <line x1="260" y1="60" x2="380" y2="150" stroke="#8A8D94" stroke-opacity=".4"/>
+        <line x1="140" y1="150" x2="70" y2="245" stroke="#8A8D94" stroke-opacity=".4"/>
+        <line x1="140" y1="150" x2="210" y2="245" stroke="#8A8D94" stroke-opacity=".4"/>
+        <line x1="380" y1="150" x2="310" y2="245" stroke="#8A8D94" stroke-opacity=".4"/>
+        <line x1="380" y1="150" x2="450" y2="245" stroke="#8A8D94" stroke-opacity=".4"/>
+        <line x1="70" y1="245" x2="70" y2="335" stroke="#8A8D94" stroke-opacity=".25"/>
+        <line x1="210" y1="245" x2="210" y2="335" stroke="#8A8D94" stroke-opacity=".25"/>
+        <line x1="310" y1="245" x2="310" y2="335" stroke="#8A8D94" stroke-opacity=".25"/>
+        <line x1="450" y1="245" x2="450" y2="335" stroke="#8A8D94" stroke-opacity=".25"/>
 
-<section class="part" id="p4">
-  <div class="wrap">
-    <div class="part-head reveal">
-      <div class="part-num">IV</div>
-      <div class="part-titles">
-        <span class="part-kicker">Ứng xử chiến lược</span>
-        <h2>Bài học cho Việt Nam trong nền kinh tế mở</h2>
-      </div>
-    </div>
-    <p class="lede reveal">Trước sức ép "quyền lực mềm" của tư bản độc quyền tài chính, Việt Nam cần các bước đi định hướng rõ ràng theo tinh thần Đại hội XIII — vừa hội nhập sâu rộng, vừa giữ vững chủ quyền kinh tế.</p>
+        <circle cx="260" cy="60" r="22" fill="#14161B" stroke="#C9A227" stroke-width="1.4"/>
+        <text x="260" y="100" text-anchor="middle" class="node-label" fill="#EDEAE2">CÔNG TY MẸ (HOLDINGS)</text>
 
-    <div class="pillars reveal">
-      <div class="pillar">
-        <div class="pillar-tag">01 · Thể chế</div>
-        <div class="pillar-body">
-          <h4>Xây dựng hành lang pháp lý thích ứng</h4>
-          <p>Khẩn trương hoàn thiện khung pháp lý thử nghiệm (Regulatory Sandbox) cho Fintech, AI, Blockchain — tạo cạnh tranh lành mạnh giữa doanh nghiệp trong nước và tập đoàn nước ngoài, tránh độc quyền nền tảng chi phối hệ thống thanh toán quốc gia.</p>
-          <p>Song song, bảo đảm an ninh và bảo mật dữ liệu cá nhân trước làn sóng khai thác thông tin xuyên biên giới.</p>
-        </div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-tag">02 · An ninh tài chính</div>
-        <div class="pillar-body">
-          <h4>Đảm bảo vững chắc an ninh tiền tệ quốc gia</h4>
-          <p>Nâng cao năng lực chống chịu của hệ thống ngân hàng, kiểm soát chặt dòng vốn đầu tư gián tiếp nước ngoài (FII), tránh phụ thuộc vào một thị trường hay một khối tư bản độc quyền nhất định.</p>
-          <p>Đẩy mạnh ngân hàng số trên hạ tầng công nghệ quốc gia để giảm lệ thuộc vào giải pháp độc quyền nước ngoài.</p>
-        </div>
-      </div>
-      <div class="pillar">
-        <div class="pillar-tag">03 · Nguyên tắc nền tảng</div>
-        <div class="pillar-body">
-          <h4>Độc lập, tự chủ gắn liền với hội nhập quốc tế</h4>
-          <p>Theo Văn kiện Đại hội XIII, kiên trì đẩy mạnh công nghiệp hóa, hiện đại hóa dựa trên khoa học, công nghệ và đổi mới sáng tạo nội sinh.</p>
-          <p>Chủ động nghiên cứu và áp dụng biện pháp phòng vệ thương mại, phòng vệ tài chính phù hợp cam kết quốc tế — không để nền kinh tế tổn thương sâu bởi chiến tranh thương mại hay cú sốc tài chính từ bên ngoài.</p>
-        </div>
-      </div>
+        <circle cx="140" cy="150" r="16" fill="#14161B" stroke="#3FD9C7" stroke-width="1"/>
+        <circle cx="380" cy="150" r="16" fill="#14161B" stroke="#3FD9C7" stroke-width="1"/>
+        <text x="260" y="176" text-anchor="middle" class="node-label">CÔNG TY CON</text>
+
+        <circle cx="70" cy="245" r="11" fill="#14161B" stroke="#8A8D94" stroke-width="1"/>
+        <circle cx="210" cy="245" r="11" fill="#14161B" stroke="#8A8D94" stroke-width="1"/>
+        <circle cx="310" cy="245" r="11" fill="#14161B" stroke="#8A8D94" stroke-width="1"/>
+        <circle cx="450" cy="245" r="11" fill="#14161B" stroke="#8A8D94" stroke-width="1"/>
+        <text x="260" y="272" text-anchor="middle" class="node-label">CÔNG TY CHÁU</text>
+
+        <circle cx="70" cy="335" r="6" fill="#14161B" stroke="#8A8D94" stroke-width=".8" stroke-opacity=".6"/>
+        <circle cx="210" cy="335" r="6" fill="#14161B" stroke="#8A8D94" stroke-width=".8" stroke-opacity=".6"/>
+        <circle cx="310" cy="335" r="6" fill="#14161B" stroke="#8A8D94" stroke-width=".8" stroke-opacity=".6"/>
+        <circle cx="450" cy="335" r="6" fill="#14161B" stroke="#8A8D94" stroke-width=".8" stroke-opacity=".6"/>
+        <text x="260" y="365" text-anchor="middle" class="node-label" style="fill:#8A8D94">DOANH NGHIỆP VỆ TINH BẢN ĐỊA</text>
+      </svg>
+    </div>
+    <div class="ratio-box reveal">
+      <div class="cap">CẤU TRÚC ĐA TẦNG KIM TỰ THÁP</div>
+      <div class="num">1 <span style="color:var(--muted); font-size:1.4rem;">→</span> 100+</div>
+      <div class="cap">VỐN TỰ CÓ&nbsp;&nbsp;·&nbsp;&nbsp;TÀI SẢN CHI PHỐI TRÊN TOÀN CẦU</div>
+      <p>Các tài phiệt thiết lập một công ty mẹ lớn (Holdings) ở đỉnh tháp. Công ty này chỉ cần nắm giữ một lượng cổ phần vừa đủ để chi phối tại các công ty con (thường là các tập đoàn công nghệ hoặc tài chính lớn). Các công ty con này lại tiếp tục đầu tư và nắm giữ cổ phần chi phối ở các công ty cháu (các sàn thương mại điện tử, các doanh nghiệp logistics toàn cầu), và chuỗi này kéo dài xuống các công ty chắt, các doanh nghiệp vệ tinh bản địa.</p>
+      <p style="margin-top: 0.8rem; border-top: 1px solid var(--line); padding-top: 0.8rem; font-style: italic;"><strong>Bản chất kinh tế:</strong> Bằng cấu trúc hình kim tự tháp đa tầng này, các tài phiệt chỉ cần một lượng vốn tự có rất nhỏ ban đầu vẫn có thể kiểm soát, định đoạt và thu hút nguồn lực thặng dư từ những khối tài sản khổng lồ gấp hàng trăm lần nằm trong mạng lưới liên kết chuỗi cung ứng toàn cầu.</p>
     </div>
   </div>
 </section>
 
-<section class="part" id="quiz-section">
-  <div class="wrap">
-    <div class="part-head reveal">
-      <div class="part-num">V</div>
-      <div class="part-titles">
-        <span class="part-kicker">Đánh giá năng lực</span>
-        <h2>Thử Thách Biện Chứng: Tư Bản Tài Chính & Quyền Lực Mềm</h2>
+<section id="s3">
+  <div class="section-index">03 / 05</div>
+  <div class="eyebrow">Phương thức bành trướng</div>
+  <h2 class="headline reveal">Phương thức chi phối bằng "Quyền lực mềm" đối với các nền kinh tế đang phát triển</h2>
+  <p class="lede reveal">Thay vì dùng sức mạnh quân sự hay áp đặt thuộc địa kiểu cũ, độc quyền tài chính hiện đại bành trướng thông qua <strong>"chiến lược biên giới mềm"</strong> và sức mạnh chi phối vô hình lên các nước đang phát triển.</p>
+
+  <div class="sat-grid reveal">
+    <div class="satellite">
+      <div>
+        <div class="k">01 / Sự bành trướng của Tư bản giả</div>
+        <p>Giá trị vốn hóa của các tập đoàn Tam khối (Big Tech, Fintech, E-commerce) được thổi phồng bong bóng qua thị trường chứng khoán và các công cụ phái sinh, vượt xa giá trị tài sản thực tế của chúng.</p>
       </div>
+      <p style="margin-top: 1rem; color: var(--gold); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 0.6rem;">TBTC phương Tây dùng "nguồn vốn ảo" được định giá cao này để đi thâu tóm, mua lại tài nguyên và sức lao động thực tế ở các nước đang phát triển.</p>
     </div>
-    
-    <div class="quiz-container reveal">
-      <div id="start-screen" style="text-align: center; padding: 20px 0;">
-        <h3 style="font-family: var(--display); color: var(--gold); margin-bottom: 16px; font-size: 24px;">Trắc Nghiệm Biện Chứng Chuyên Sâu</h3>
-        <p style="color: var(--paper-dim); font-size: 15px; max-width: 600px; margin: 0 auto 24px; font-style: italic;">
-          "Hệ thống gồm 10 câu hỏi lý luận bám sát Chương 4 Kinh tế chính trị Mác - Lênin và bối cảnh chuyển đổi số tại Việt Nam."
-        </p>
-        <button onclick="startQuiz()" class="quiz-start-btn">BẮT ĐẦU THỬ THÁCH</button>
+    <div class="satellite">
+      <div>
+        <div class="k">02 / Xuất khẩu tư bản thế hệ mới &amp; "Bẫy thanh khoản"</div>
+        <p>Sự kết hợp giữa Fintech và Hệ thống ngân hàng bóng tối (Shadow Banking) giúp các quỹ đầu tư quốc tế thực hiện xuất khẩu tư bản dưới hình thức đầu tư gián tiếp (FII) cực kỳ nhanh chóng.</p>
       </div>
-
-      <div id="quiz-screen" class="hidden-box">
-        <div style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--paper-faint); border-bottom: 1px solid var(--line-soft); padding-bottom: 12px; margin-bottom: 20px;">
-          <span>TIẾN TRÌNH: <span id="current-index" style="color: var(--gold); font-weight: bold;">1</span>/10</span>
-          <span>ĐIỂM SỐ: <span id="current-score" style="color: #10b981; font-weight: bold;">0</span></span>
-        </div>
-        
-        <h4 id="question-text" style="font-family: var(--display); font-size: 19px; color: var(--paper); margin-bottom: 24px; font-weight: 600; line-height: 1.4;">
-          Đang tải câu hỏi...
-        </h4>
-
-        <div id="options-container"></div>
-
-        <div id="explanation-box" class="quiz-exp-box hidden-box">
-          <div style="font-family: var(--display); font-weight: bold; margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
-            <span id="result-status-icon"></span>
-            <span id="result-status-text"></span>
-          </div>
-          <p id="explanation-text"></p>
-        </div>
-
-        <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-          <button id="next-btn" onclick="nextQuestion()" class="quiz-next-btn hidden-box">CÂU TIẾP THEO →</button>
-        </div>
+      <p style="margin-top: 1rem; color: var(--gold); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 0.6rem;">Họ đổ mạnh vốn vào hạ tầng khi thị trường tăng trưởng, rồi đột ngột rút vốn khi có biến động, gây ra khủng hoảng tỷ giá và ép các nước vào thế phụ thuộc.</p>
+    </div>
+    <div class="satellite">
+      <div>
+        <div class="k">03 / Độc quyền Tiêu chuẩn và Hệ sinh thái</div>
+        <p>Việc kiểm soát các hạ tầng cốt lõi như mạng lưới thanh toán quốc tế (SWIFT), hàng rào sở hữu trí tuệ gắt gao, thuật toán AI và các sàn thương mại toàn cầu tạo ra một "vòng lặp phụ thuộc".</p>
       </div>
-
-      <div id="result-screen" class="hidden-box" style="text-align: center; padding: 20px 0;">
-        <h3 style="font-family: var(--display); color: var(--gold); font-size: 26px; margin-bottom: 8px;">Hoàn Thành Thử Thách!</h3>
-        <p style="font-family: var(--mono); font-size: 12px; color: var(--paper-faint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 24px;">Tổng kết năng lực lý luận biện chứng</p>
-        
-        <div style="background: var(--bg-panel-2); display: inline-block; padding: 24px 48px; border-radius: 8px; border: 1px solid var(--line-soft); margin-bottom: 24px;">
-          <div style="font-family: var(--mono); font-size: 44px; font-weight: bold; color: var(--paper);"><span id="final-score">0</span>/10</div>
-          <div id="rank-badge" style="font-family: var(--display); font-size: 14px; font-weight: bold; margin-top: 6px;">Hạng mục</div>
-        </div>
-
-        <p id="rank-desc" style="color: var(--paper-dim); font-size: 15px; max-width: 600px; margin: 0 auto 28px; line-height: 1.6;"></p>
-        
-        <button onclick="restartQuiz()" class="quiz-start-btn" style="background: transparent; border: 1px solid var(--paper-dim); color: var(--paper);">THỬ THÁCH LẠI</button>
-      </div>
+      <p style="margin-top: 1rem; color: var(--gold); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 0.6rem;">Doanh nghiệp ở các quốc gia đang phát triển nếu muốn sản xuất và bán hàng thì bắt buộc phải tuân thủ và hoạt động trên luật chơi tài chính do phương Tây thiết lập.</p>
     </div>
   </div>
 </section>
 
-<section class="conclusion" id="ketluan">
-  <div class="wrap reveal">
-    <span class="part-kicker">Kết luận</span>
-    <blockquote>Lý luận của <span class="accent">V.I. Lênin</span> về tư bản tài chính không hề lỗi thời — nó đang vận động dưới những hình thái tinh vi hơn trong kỷ nguyên số. Làm chủ công nghệ, kiên định hoàn thiện thể chế, và chủ động phòng ngừa rủi ro tài chính là cách Việt Nam biến thách thức toàn cầu hóa thành cơ hội bứt phá.</blockquote>
-    <div class="sign">— Chuyên đề kinh tế chính trị · FPT University</div>
+<section id="s4">
+  <div class="section-index">04 / 05</div>
+  <div class="eyebrow">Ứng xử chiến lược</div>
+  <h2 class="headline reveal">Bài học ứng xử và bảo vệ lợi ích quốc gia - dân tộc của Việt Nam</h2>
+  <p class="lede reveal">Trước sức ép từ quyền lực mềm của các liên minh độc quyền Tam khối toàn cầu, Việt Nam cần vận dụng linh hoạt lý luận và bám sát tinh thần chỉ đạo của <strong>Văn kiện Đại hội XIII</strong> để xây dựng chiến lược tự chủ kinh tế.</p>
+
+  <div class="pillars reveal">
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+      <div class="pnum">CHIẾN LƯỢC 01</div>
+      <h3>Đa dạng hóa, đa phương hóa quan hệ kinh tế</h3>
+      <p>Thực hiện nghiêm túc định hướng độc lập tự chủ, "không phụ thuộc vào một thị trường, một đối tác cụ thể" nhằm giảm thiểu rủi ro khi các liên minh độc quyền toàn cầu xảy ra xung đột địa chính trị hoặc áp đặt trừng phạt kinh tế, đứt gãy chuỗi cung ứng.</p>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="pnum">CHIẾN LƯỢC 02</div>
+      <h3>Kiểm soát dòng vốn &amp; an ninh tài chính vĩ mô</h3>
+      <p>Nâng cao năng lực giám sát dòng vốn gián tiếp xuyên biên giới (FII) và các hoạt động ngân hàng bóng tối. Thiết lập cơ chế chính sách để ngăn chặn hiện tượng <b>"Flip Startup"</b> (khởi nghiệp tiềm năng dịch chuyển pháp nhân sang các quốc gia khác như Singapore để gọi vốn do vướng mắc cơ chế), tránh làm thất thoát dòng thặng dư trí tuệ quốc gia.</p>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" stroke-width="1.4"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+      <div class="pnum">CHIẾN LƯỢC 03</div>
+      <h3>Xây dựng hành lang pháp lý thử nghiệm (Sandbox)</h3>
+      <p>Đối với các mô hình Fintech, tài sản mã hóa và các phương thức thương mại số mới, cần nhanh chóng áp dụng cơ chế Sandbox có kiểm soát. Điều này vừa kích thích đổi mới sáng tạo nội sinh, vừa ngăn chặn các tập đoàn nước ngoài lợi dụng khoảng trống pháp lý để thâu tóm dữ liệu người dùng.</p>
+    </div>
+    <div class="pillar">
+      <svg viewBox="0 0 24 24" stroke-width="1.4"><path d="M12 2l3 6 6 1-4.5 4.5L18 20l-6-3-6 3 1.5-6.5L3 9l6-1 3-6z"/></svg>
+      <div class="pnum">CHIẾN LƯỢC 04</div>
+      <h3>Phát triển lực lượng sản xuất nội sinh</h3>
+      <p>Đầu tư mạnh mẽ vào hạ tầng số quốc gia, hệ thống logistics nội địa và các nền tảng công nghệ lõi độc lập của người Việt. Bản chất để thoát khỏi quyền lực độc quyền mềm của ngoại bang là phải có một "năng lực sản xuất nội sinh" đủ mạnh để làm chủ các huyết mạch kinh tế cốt lõi (sản xuất công nghệ, tài chính số, kênh phân phối thương mại).</p>
+    </div>
   </div>
 </section>
 
-<section class="part" id="thamkhao">
-  <div class="wrap">
-    <div class="part-head reveal">
-      <div class="part-num">VI</div>
-      <div class="part-titles">
-        <span class="part-kicker">Nguồn & phương pháp</span>
-        <h2>Danh mục tham khảo và công cụ AI hỗ trợ</h2>
+<section id="s5">
+  <div class="section-index">05 / 05</div>
+  <div class="eyebrow">Minh bạch học thuật</div>
+  <h2 class="headline reveal">Tài liệu tham khảo &amp; Hệ thống AI hỗ trợ phát triển</h2>
+  <p class="lede reveal">Tác phẩm tư duy này được xây dựng trên nền tảng nghiên cứu nghiêm túc các văn bản lý luận kinh tế và chính trị chính thống, phối hợp cùng hệ thống AI đa tác vụ để đạt độ chính xác và thẩm mỹ cao nhất.</p>
+
+  <div class="stage reveal">
+    <h3 style="font-family: var(--display); font-size: 1.3rem; font-weight: 500; color: var(--gold);">Tài liệu văn kiện nguồn</h3>
+    <div class="ref-list">
+      <div class="ref-item">
+        <p><strong>V.I. Lênin (1916)</strong>, <em>Chủ nghĩa đế quốc, giai đoạn tột cùng của chủ nghĩa tư bản</em>, NXB Chính trị quốc gia Sự thật.</p>
+        <a href="https://archive.org/details/chu-nghia-de-quoc-giai-doan-tot-cung-cua-chu-nghia-tu-ban" target="_blank">→ Xem Văn Bản Lưu Trữ (Archive.org)</a>
+      </div>
+      <div class="ref-item">
+        <p><strong>Bộ Giáo dục và Đào tạo (2021)</strong>, <em>Giáo trình Kinh tế chính trị Mác - Lênin</em> (Dành cho bậc đại học - hệ không chuyên lý luận chính trị), NXB Chính trị quốc gia Sự thật.</p>
+        <a href="https://drive.google.com/file/d/1-SeulTGqLGFahp_34Bs7AN6TGdG9o_60/view" target="_blank">→ Liên Kết Xem Giáo Trình (Google Drive)</a>
+      </div>
+      <div class="ref-item">
+        <p><strong>Đảng Cộng sản Việt Nam (2021)</strong>, <em>Văn kiện Đại hội đại biểu toàn quốc lần thứ XIII</em>, NXB Chính trị quốc gia Sự thật.</p>
+        <a href="https://baochinhphu.vn/toan-van-nghi-quyet-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-cua-dang-102288263.htm" target="_blank">→ Toàn Văn Nghị Quyết (Cổng TTĐT Chính Phủ)</a>
       </div>
     </div>
 
-    <div class="ref-block reveal">
-      <span class="ref-heading">Tài liệu tham khảo</span>
-      <ol class="ref-list">
-        <li>
-          <span class="ref-author">V.I. Lênin</span> (1916), <em>Chủ nghĩa đế quốc, giai đoạn tột cùng của chủ nghĩa tư bản</em>, NXB Chính trị quốc gia Sự thật.
-          <a href="https://archive.org/details/chu-nghia-de-quoc-giai-doan-tot-cung-cua-chu-nghia-tu-ban" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
-        </li>
-        <li>
-          <span class="ref-author">Bộ Giáo dục và Đào tạo</span> (2021), <em>Giáo trình Kinh tế chính trị Mác - Lênin</em> (Dành cho bậc đại học — hệ không chuyên lý luận chính trị), NXB Chính trị quốc gia Sự thật.
-          <a href="https://drive.google.com/file/d/1-SeulTGqLGFahp_34Bs7AN6TGdG9o_60/view" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
-        </li>
-        <li>
-          <span class="ref-author">Đảng Cộng sản Việt Nam</span> (2021), <em>Vavan kiện Đại hội đại biểu toàn quốc lần thứ XIII</em>, NXB Chính trị quốc gia Sự thật.
-          <a href="https://tulieuvankien.dangcongsan.vn/van-kien-tu-lieu-ve-dang/book/sach-chinh-tri/van-kien-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-tap-1-403" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link 1</a>
-          <a href="https://tulieuvankien.dangcongsan.vn/van-kien-tu-lieu-ve-dang/book/sach-chinh-tri/van-kien-dai-hoi-dai-bieu-toan-quoc-lan-thu-xiii-tap-2-404" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link 2</a>
-        </li>
-        <li>
-          <span class="ref-author">Hà Lan Anh</span> (2026), "Xây dựng Nghị định về Fintech: Cân bằng các mục tiêu ổn định tài chính, thúc đẩy sáng tạo và bảo vệ người tiêu dùng tài chính", <em>Tạp chí Ngân hàng</em>, số 11/2026.
-          <a href="https://tapchinganhang.gov.vn/xay-dung-nghi-dinh-ve-fintech-can-bang-cac-muc-tieu-on-dinh-tai-chinh-thuc-day-sang-tao-va-bao-ve-nguoi-tieu-dung-tai-chinh-9577.html" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
-        </li>
-        <li>
-          <span class="ref-author">PGS. TS. Đặng Thu Thủy & TS. Nguyễn Trung Hậu</span> (2024), "An ninh tài chính, tiền tệ của Việt Nam đến năm 2030 và khuyến nghị chính sách", Đề tài nghiên cứu cấp quốc gia: <em>Cạnh tranh chiến lược Mỹ - Trung: Tác động và đối sách của Việt Nam</em> (Mã số: KX.04.37/21-25).
-          <a href="https://tapchinganhang.gov.vn/an-ninh-tai-chinh-tien-te-cua-viet-nam-den-nam-2030-va-khuyen-nghi-chinh-sach-695.html" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
-        </li>
-        <li>
-          <span class="ref-author">Tạp chí Ngân hàng</span> (2026), "An ninh, bảo mật khi áp dụng AI và Blockchain trong hoạt động ngân hàng số", Chuyên đề đặc biệt Quý 2 năm 2026.
-          <a href="https://tapchinganhang.gov.vn/an-ninh-bao-mat-khi-ap-dung-ai-va-blockchain-trong-hoat-dong-ngan-hang-so-9263.html" target="_blank" style="color: var(--gold); text-decoration: none; margin-left: 8px;">link</a>
-        </li>
-      </ol>
-    </div>
-
-    <div class="ref-block reveal">
-      <span class="ref-heading">Công cụ AI hỗ trợ</span>
-      <div class="ai-grid">
-        <div class="ai-item">
-          <span class="ai-name">NotebookLM</span>
-          <span class="ai-role">Tổng hợp thông tin, kiểm tra tài liệu</span>
-        </div>
-        <div class="ai-item">
-          <span class="ai-name">Gemini</span>
-          <span class="ai-role">Phân tích chuyên sâu nội dung, hỗ trợ dựng trang web</span>
-        </div>
-      </div>
+    <h3 style="font-family: var(--display); font-size: 1.3rem; font-weight: 500; color: var(--gold); margin-top: 2.5rem;">Ma trận vai trò hệ thống AI trợ lý</h3>
+    <div class="ai-badge-grid">
+      <div class="ai-badge"><b>NotebookLM:</b> Tổng hợp thông tin chéo &amp; Kiểm tra tính toàn vẹn tài liệu nguồn</div>
+      <div class="ai-badge"><b>Gemini:</b> Phân tích cấu trúc lý luận chuyên sâu &amp; Biện chứng học</div>
+      <div class="ai-badge"><b>Claude:</b> Lập trình giao diện front-end nghệ thuật số &amp; Thiết kế SVG động</div>
     </div>
   </div>
 </section>
 
 <footer>
-  Tư bản tài chính & quyền lực mềm của độc quyền · Bài học cho kinh tế Việt Nam
+  <div>
+    <div class="ftitle">Kết nối tri thức, không chỉ đọc nó.</div>
+    <div class="fnote" style="margin-top:.8rem;">Chuyên đề Kinh tế chính trị Mác–Lênin · Tư bản tài chính và quyền lực mềm độc quyền trong kỷ nguyên số</div>
+  </div>
+  <div class="fnote">DỰNG THEO LÝ LUẬN V.I. LÊNIN VỀ TƯ BẢN TÀI CHÍNH<br>ĐỐI CHIẾU VĂN KIỆN ĐẠI HỘI XIII — ĐCSVN</div>
 </footer>
 
 <script>
-  // Hiệu ứng cuộn Reveal phần tử
-  const els = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-    });
-  }, {threshold:0.12});
-  els.forEach(el=>io.observe(el));
+// custom cursor
+const cur = document.querySelector('.cursor');
+const ring = document.querySelector('.cursor-ring');
+let mx=0,my=0, rx=0, ry=0;
+window.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+function loop(){ rx += (mx-rx)*0.16; ry += (my-ry)*0.16; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); }
+loop();
+document.querySelectorAll('a, .card, .pillar, .satellite, button').forEach(el=>{
+  el.addEventListener('mouseenter', ()=>{ ring.style.width='54px'; ring.style.height='54px'; ring.style.borderColor='#C9A227'; });
+  el.addEventListener('mouseleave', ()=>{ ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='#3FD9C7'; });
+});
 
-  // Dữ liệu câu hỏi trắc nghiệm lý luận
-  const quizData = [
-    {
-      q: "Theo lý luận của V.I. Lênin, bản chất cốt lõi của 'Tư bản tài chính' là gì?",
-      a: "Sự thâm nhập, hòa hợp và kết hợp lẫn nhau giữa tư bản ngân hàng độc quyền và tư bản công nghiệp độc quyền.",
-      options: [
-        "Sự thống trị tuyệt đối của các nhà tài phiệt ngân hàng đối với toàn bộ thị trường tiền tệ quốc tế.",
-        "Sự thâm nhập, hòa hợp và kết hợp lẫn nhau giữa tư bản ngân hàng độc quyền và tư bản công nghiệp độc quyền.",
-        "Sự chuyển dịch dòng vốn đầu tư trực tiếp nước ngoài từ nước phát triển sang nước đang phát triển.",
-        "Sự thao túng của các tổ chức tài chính đa quốc gia như IMF và World Bank vào nền kinh tế vĩ mô."
-      ],
-      explain: "Bản chất của tư bản tài chính không phải là sự triệt tiêu một bên, mà là sự thâm nhập chéo, hòa hợp giữa tổ chức độc quyền ngân hàng và tổ chức độc quyền công nghiệp."
-    },
-    {
-      q: "Hình thức nào dưới đây đóng vai trò là 'công cụ vận hành tối thượng' giúp tư bản tài chính bành trướng quyền lực kiểm soát?",
-      a: "Hệ thống tham dự (Holding System).",
-      options: [
-        "Hợp đồng xuất khẩu tư bản thông thường.",
-        "Cơ chế tự do cạnh tranh hoàn hảo.",
-        "Hệ thống tham dự (Holding System).",
-        "Mô hình cho vay tín dụng ưu đãi (ODA)."
-      ],
-      explain: "Thông qua 'Hệ thống tham dự', một tập đoàn mẹ nắm cổ phần chi phối công ty con, công ty con chi phối công ty cháu... tạo nên mạng lưới quyền lực thao túng dòng vốn khổng lồ bằng lượng vốn tự có rất nhỏ."
-    },
-    {
-      q: "In kỷ nguyên kinh tế số và toàn cầu hóa, sự kết hợp 'Tam khối' tạo nên tư bản tài chính hiện đại bao gồm các thành tố nào?",
-      a: "Tư bản Công nghiệp - Tư bản Thương nghiệp (Công nghệ) - Tư bản Ngân hàng (Fintech).",
-      options: [
-        "Tư bản Nông nghiệp - Tư bản Công nghiệp - Tư bản Thương nghiệp toàn cầu.",
-        "Tư bản Công nghiệp - Tư bản Thương nghiệp (Công nghệ) - Tư bản Ngân hàng (Fintech).",
-        "Tư bản Nhà nước - Tư bản Tư nhân - Quỹ đầu tư mạo hiểm quốc tế.",
-        "Tư bản Đầu cơ bất động sản - Thị trường chứng khoán - Hệ thống ví điện tử."
-      ],
-      explain: "Sự phát triển của Big Tech và Fintech đã mở rộng lý luận gốc của Lênin. Tư bản tài chính ngày nay là sự tích hợp chặt chẽ giữa Sản xuất (Công nghiệp), Nền tảng phân phối dữ liệu (Thương nghiệp/Công nghệ), và Ví/Sàn thanh toán (Ngân hàng/Fintech)."
-    },
-    {
-      q: "Hệ quả nguy hiểm nhất từ quyền lực mềm của các hệ sinh thái độc quyền (Ecosystem) xuyên biên giới đối với các nước đang phát triển là gì?",
-      a: "Tạo ra hiệu ứng 'Khóa chặt' (Lock-in effect), đẩy doanh nghiệp và người tiêu dùng bản địa vào thế phụ thuộc công nghệ và tài chính.",
-      options: [
-        "Làm gia tăng tỷ lệ lạm phát phi mã của nền kinh tế nội địa.",
-        "Tạo ra hiệu ứng 'Khóa chặt' (Lock-in effect), đẩy doanh nghiệp và người tiêu dùng bản địa vào thế phụ thuộc công nghệ và tài chính.",
-        "Ngăn cản hoàn toàn dòng vốn đầu tư trực tiếp nước ngoài (FDI) đổ vào quốc gia.",
-        "Ép buộc các quốc gia phải thay đổi thể chế chính trị ngay lập tức theo hướng phương Tây."
-      ],
-      explain: "Các hệ sinh thái như Apple, Amazon, Alphabet bủa vây người dùng bằng sự tiện lợi, nhưng bản chất là quyền lực mềm bẫy cấu trúc, khiến doanh nghiệp bản địa bị phụ thuộc sâu sắc vào hạ tầng số của họ."
-    },
-    {
-      q: "Để thích ứng chủ động trước sự bành trướng của Fintech xuyên biên giới, Việt Nam đang khẩn trương xây dựng cơ chế quản lý nào?",
-      a: "Cơ chế thử nghiệm có kiểm soát (Regulatory Sandbox) trong lĩnh vực ngân hàng.",
-      options: [
-        "Cơ chế đóng cửa hoàn toàn không cho các ứng dụng Fintech nước ngoài hoạt động.",
-        "Cơ chế thả nổi hoàn toàn để kích thích đổi mới sáng tạo không giới hạn.",
-        "Cơ chế thử nghiệm có kiểm soát (Regulatory Sandbox) trong lĩnh vực ngân hàng.",
-        "Cơ chế áp thuế đặc biệt ở mức 100% đối với mọi giao dịch ví điện tử ngoại."
-      ],
-      explain: "Theo tinh thần Nghị quyết 100/NQ-CP, Regulatory Sandbox là giải pháp giúp Việt Nam vừa thúc đẩy đổi mới sáng tạo, vừa cân bằng ổn định an toàn tài chính vĩ mô và bảo vệ người tiêu dùng."
-    },
-    {
-      q: "Hiện tượng một số Startup công nghệ Việt Nam phải đăng ký pháp nhân tại Singapore (Flip Startup) để gọi vốn quốc tế phản ánh điều gì?",
-      a: "Sự rò rỉ chủ quyền số và khoảng cách pháp lý giữa thể chế trong nước với luật chơi tài chính toàn cầu.",
-      options: [
-        "Các doanh nghiệp này không có lòng yêu nước và muốn né tránh nghĩa vụ thuế.",
-        "Sự rò rỉ chủ quyền số và khoảng cách pháp lý giữa thể chế trong nước với luật chơi tài chính toàn cầu.",
-        "Nền kinh tế Việt Nam hoàn toàn không có nhu cầu phát triển công nghệ cao.",
-        "Sự sụp đổ tất yếu của hệ thống tài chính tín dụng quốc gia."
-      ],
-      explain: "Flip Startup là hồi chuông cảnh báo về việc hệ thống thể chế tài chính trong nước chưa hoàn thiện, vô tình khiến các giá trị thặng dư trí tuệ, dòng vốn và dữ liệu của Việt Nam bị dịch chuyển ra nước ngoài."
-    },
-    {
-      q: "Thuật ngữ 'Vốn nóng' (Hot money) được hiểu như thế nào trong bối cảnh rủi ro an ninh tiền tệ?",
-      a: "Dòng vốn đầu tư gián tiếp lưu chuyển cực nhanh qua thị trường chứng khoán, tiền tệ nhằm đầu cơ ngắn hạn và có thể rút chạy tức thì.",
-      options: [
-        "Dòng vốn FDI giải ngân vào các nhà máy luyện kim có nhiệt độ cao.",
-        "Các khoản vay dài hạn ưu đãi từ Ngân hàng Thế giới cho hạ tầng giao thông.",
-        "Dòng vốn đầu tư gián tiếp lưu chuyển cực nhanh qua thị trường chứng khoán, tiền tệ nhằm đầu cơ ngắn hạn và có thể rút chạy tức thì.",
-        "Lượng tiền mặt lưu thông vượt quá mức cung tiền của Ngân hàng Nhà nước."
-      ],
-      explain: "Vốn nóng mang tính chất đầu cơ cao. Khi có biến động, dòng vốn này có thể rút nhanh hàng tỷ USD chỉ bằng một click chuột, gây tổn thương trực tiếp đến tỷ giá và an ninh tiền tệ quốc gia."
-    },
-    {
-      q: "Theo định hướng Đại hội XIII của Đảng, muốn xây dựng nền kinh tế độc lập, tự chủ trong bối cảnh hội nhập mở, yếu tố cốt lõi là gì?",
-      a: "Làm chủ công nghệ và chủ động, tích cực hội nhập, đa dạng hóa thị trường, nâng cao khả năng thích ứng của nền kinh tế.",
-      options: [
-        "Thực hiện chính sách đóng cửa biên giới, tự cung tự cấp như thời kỳ bao cấp.",
-        "Làm chủ công nghệ và chủ động, tích cực hội nhập, đa dạng hóa thị trường, nâng cao khả năng thích ứng của nền kinh tế.",
-        "Phụ thuộc hoàn toàn vào nguồn viện trợ và bảo hộ quân sự của các siêu cường.",
-        "Tập trung mọi nguồn lực chỉ để phát triển thị trường bất động sản đô thị."
-      ],
-      explain: "Văn kiện Đại hội XIII khẳng định độc lập, tự chủ kinh tế thời đại mới phải dựa trên năng lực nội sinh, làm chủ công nghệ lõi kết hợp đa dạng hóa thị trường để không bị rơi vào bẫy áp đặt tài chính."
-    },
-    {
-      q: "Khi đối diện với cuộc chiến thương mại và sự dịch chuyển chuỗi cung ứng ra khỏi Trung Quốc, Việt Nam có lợi thế chiến lược gì?",
-      a: "Là điểm đến tiềm năng thu hút các tập đoàn công nghệ dịch chuyển sản xuất nhờ vị trí địa lý và các FTA thế hệ mới.",
-      options: [
-        "Có nguồn tài nguyên khoáng sản thô vô tận và giá rẻ nhất thế giới.",
-        "Là điểm đến tiềm năng thu hút các tập đoàn công nghệ dịch chuyển sản xuất nhờ vị trí địa lý và các FTA thế hệ mới.",
-        "Hệ thống luật pháp lỏng lẻo, không kiểm soát khí thải bảo vệ môi trường.",
-        "Sở hữu các tổ chức độc quyền tài chính lớn mạnh vượt qua cả phố Wall."
-      ],
-      explain: "Vị trí địa lý chiến lược, sự ổn định chính trị cùng việc ký kết nhiều FTA thế hệ mới giúp Việt Nam đón nhận làn sóng dịch chuyển chuỗi cung ứng toàn cầu một cách chủ động."
-    },
-    {
-      q: "Hành vi bành trướng 'Quyền lực mềm' của tư bản tài chính độc quyền hiện đại thường được ngụy trang dưới danh nghĩa nào?",
-      a: "Các chuẩn mực kỹ thuật khắt khe, hàng rào vệ sinh (SPS), kiểm dịch thực vật và các quỹ hỗ trợ phát triển gắn liền điều kiện ràng buộc.",
-      options: [
-        "Xung đột vũ trang hoặc đe dọa sử dụng vũ lực quân sự trực diện.",
-        "Các chuẩn mực kỹ thuật khắt khe, hàng rào vệ sinh (SPS), kiểm dịch thực vật và các quỹ hỗ trợ phát triển gắn liền điều kiện ràng buộc.",
-        "Hủy bỏ hoàn toàn các hiệp định thương mại tự do đã ký kết.",
-        "Quốc hữu hóa toàn bộ tài sản của các quốc gia đang phát triển."
-      ],
-      explain: "Quyền lực mềm không dùng súng đạn mà dùng các công cụ tinh vi như hàng rào kỹ thuật, tiêu chuẩn độc quyền, cơ chế trói buộc vốn để điều khiển, chi phối các nước kém phát triển từ xa."
+// hero entrance
+gsap.timeline()
+  .to('#heroKicker', {opacity:1, duration:.8, ease:'power2.out'}, .2)
+  .from('.hero h1', {opacity:0, y:24, duration:1, ease:'power3.out'}, .35)
+  .from('.hero p.sub', {opacity:0, y:16, duration:.9, ease:'power3.out'}, .6)
+  .from('#heroSvgWrap', {opacity:0, scale:.94, duration:1.4, ease:'power2.out'}, 0);
+
+// scroll reveals
+gsap.utils.toArray('.reveal').forEach((el)=>{
+  gsap.to(el, {
+    opacity:1, y:0, duration:1, ease:'power3.out',
+    scrollTrigger:{ trigger:el, start:'top 85%' }
+  });
+});
+
+// card expand/collapse
+document.querySelectorAll('.card').forEach(card=>{
+  card.addEventListener('click', ()=>{
+    const wasOpen = card.classList.contains('open');
+    card.parentElement.querySelectorAll('.card').forEach(c=>c.classList.remove('open'));
+    if(!wasOpen) card.classList.add('open');
+  });
+});
+
+// scrollspy for dotnav
+const navLinks = document.querySelectorAll('.dotnav a');
+const sections = ['hero','s1','s2','s3','s4','s5'].map(id=>document.getElementById(id));
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const match = document.querySelector('.dotnav a[data-i="'+entry.target.id+'"]');
+      if(match) match.classList.add('active');
     }
-  ];
-
-  let currentIndex = 0;
-  let score = 0;
-  let hasAnswered = false;
-
-  function startQuiz() {
-    document.getElementById('start-screen').classList.add('hidden-box');
-    document.getElementById('quiz-screen').classList.remove('hidden-box');
-    loadQuestion();
-  }
-
-  function loadQuestion() {
-    hasAnswered = false;
-    document.getElementById('next-btn').classList.add('hidden-box');
-    document.getElementById('explanation-box').classList.add('hidden-box');
-    
-    document.getElementById('current-index').innerText = currentIndex + 1;
-    document.getElementById('current-score').innerText = score;
-
-    const currentData = quizData[currentIndex];
-    document.getElementById('question-text').innerText = currentData.q;
-
-    const optionsContainer = document.getElementById('options-container');
-    optionsContainer.innerHTML = '';
-
-    currentData.options.forEach((option) => {
-      const button = document.createElement('button');
-      button.className = "quiz-option-btn";
-      button.innerHTML = `
-        <span class="quiz-option-dot"></span>
-        <span>${option}</span>
-      `;
-      button.onclick = () => checkAnswer(button, option, currentData.a, currentData.explain);
-      optionsContainer.appendChild(button);
-    });
-  }
-
-  function checkAnswer(selectedButton, selectedOption, correctAnswer, explanation) {
-    if (hasAnswered) return;
-    hasAnswered = true;
-
-    const optionsContainer = document.getElementById('options-container');
-    const buttons = optionsContainer.getElementsByTagName('button');
-
-    for (let btn of buttons) {
-      btn.disabled = true;
-      if (btn.innerText.includes(correctAnswer)) {
-        btn.style.borderColor = "#10b981";
-        btn.style.background = "rgba(16, 185, 129, 0.08)";
-        btn.style.color = "#10b981";
-      } else {
-        btn.style.opacity = "0.3";
-      }
-    }
-
-    const expBox = document.getElementById('explanation-box');
-    const statusIcon = document.getElementById('result-status-icon');
-    const statusText = document.getElementById('result-status-text');
-
-    if (selectedOption === correctAnswer) {
-      score++;
-      document.getElementById('current-score').innerText = score;
-      expBox.className = "quiz-exp-box quiz-exp-success";
-      statusIcon.innerText = "✓";
-      statusText.innerText = "CHÍNH XÁC";
-    } else {
-      selectedButton.style.opacity = "1";
-      selectedButton.style.borderColor = "#ef4444";
-      selectedButton.style.background = "rgba(239, 68, 68, 0.08)";
-      selectedButton.style.color = "#ef4444";
-
-      expBox.className = "quiz-exp-box quiz-exp-error";
-      statusIcon.innerText = "✕";
-      statusText.innerText = "CHƯA CHÍNH XÁC";
-    }
-
-    document.getElementById('explanation-text').innerText = explanation;
-    expBox.classList.remove('hidden-box');
-    document.getElementById('next-btn').classList.remove('hidden-box');
-  }
-
-  function nextQuestion() {
-    currentIndex++;
-    if (currentIndex < quizData.length) {
-      loadQuestion();
-    } else {
-      showResults();
-    }
-  }
-
-  function showResults() {
-    document.getElementById('quiz-screen').classList.add('hidden-box');
-    const resultScreen = document.getElementById('result-screen');
-    resultScreen.classList.remove('hidden-box');
-
-    document.getElementById('final-score').innerText = score;
-
-    const badge = document.getElementById('rank-badge');
-    const desc = document.getElementById('rank-desc');
-
-    if (score === 10) {
-      badge.innerText = "NHÀ BIỆN CHỨNG LỖI LẠC";
-      badge.style.color = "var(--gold)";
-      desc.innerText = "Tuyệt vời! Bạn nắm giữ tư duy lý luận cực kỳ sắc bén. Bạn hoàn toàn thấu hiểu bản chất vận động của tư bản tài chính và có tầm nhìn ứng xử chiến lược chuẩn xác cho kinh tế Việt Nam trong bối cảnh toàn cầu hóa.";
-    } else if (score >= 7) {
-      badge.innerText = "CHUYÊN GIA PHÂN TÍCH KINH TẾ VĨ MÔ";
-      badge.style.color = "#10b981";
-      desc.innerText = "Rất tốt! Bạn hiểu rõ cấu trúc của hệ thống tham dự, các mô hình hệ sinh thái công nghệ và cơ chế Regulatory Sandbox. Khả năng vận dụng lý thuyết vào thực tiễn Việt Nam của bạn đạt mức khá cao.";
-    } else if (score >= 5) {
-      badge.innerText = "HỌC VIÊN CÓ NỀN TẢNG";
-      badge.style.color = "var(--paper-dim)";
-      desc.innerText = "Đạt yêu cầu. Bạn nắm được định nghĩa cơ bản về tư bản tài chính và độc quyền. Tuy nhiên, bạn nên đọc kỹ hơn tài liệu Đại hội XIII và thực trạng Sandbox của Ngân hàng Nhà nước để phản xạ sắc sảo hơn.";
-    } else {
-      badge.innerText = "CẦN NGHIÊN CỨU LẠI GIÁO TRÌNH";
-      badge.style.color = "var(--red)";
-      desc.innerText = "Bạn chưa vượt qua thử thách. Bản chất tam khối hiện đại và các công cụ bành trướng quyền lực mềm tương đối phức tạp. Hãy xem lại Chương 4 Kinh tế chính trị và các tài liệu chuyên đề đính kèm để củng cố lại kiến thức.";
-    }
-  }
-
-  function restartQuiz() {
-    currentIndex = 0;
-    score = 0;
-    document.getElementById('result-screen').classList.add('hidden-box');
-    document.getElementById('start-screen').classList.remove('hidden-box');
-  }
+  });
+}, {threshold:0.4});
+sections.forEach(s=>spy.observe(s));
 </script>
-
 </body>
 </html>
